@@ -150,13 +150,13 @@ function render() {
         <h2 class="text-3xl mb-6 glow">${t.contacts}</h2>
 
         <p class="mb-2">${t.phone}: +38082063627</p>
-        <p class="mb-2">${t.telegram}: +38082063627</p>
+<p class="mb-2">${t.telegram}: @Tanua_Mik</p>
         <p class="mb-2">${t.instagram}: @tanya_mukhajlenko</p>
 
         <div class="flex justify-center gap-4 mt-6 flex-wrap">
-          <a href="https://t.me/38082063627" target="_blank" class="btn white">
-            Telegram
-          </a>
+         <a href="https://t.me/Tanua_Mik" target="_blank" class="btn white">
+  Telegram
+</a>
 
           <a href="https://instagram.com/tanya_mukhajlenko" target="_blank" class="btn pink">
             Instagram
