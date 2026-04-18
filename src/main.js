@@ -1,7 +1,5 @@
 import './style.css'
 
-const base = import.meta.env.BASE_URL
-
 let lang = 'ua'
 
 const texts = {
@@ -58,7 +56,7 @@ function render() {
       style="
         background:
           linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)),
-          url('${base}images/bg.jpg');
+          url('/handmade-site/images/bg.jpg');
         background-size: cover;
         background-position: center;
         background-attachment: fixed;
@@ -96,7 +94,7 @@ function render() {
 
           <div class="bg-white rounded-3xl p-4 reveal reveal-right">
             <img
-              src="${base}images/hero.jpg"
+              src="/handmade-site/images/hero.jpg"
               class="w-full h-[420px] object-cover rounded-2xl"
               alt="Hero"
             />
@@ -110,21 +108,21 @@ function render() {
 
           <div class="grid md:grid-cols-3 gap-8">
             <div class="card reveal reveal-left">
-              <img src="${base}images/blanket.jpg" alt="${t.blankets}" />
+              <img src="/handmade-site/images/blanket.jpg" alt="${t.blankets}" />
               <h3>${t.blankets}</h3>
               <p>${t.blanketsDesc}</p>
               <a href="#contacts">${t.order}</a>
             </div>
 
             <div class="card reveal reveal-bottom">
-              <img src="${base}images/toy.jpg" alt="${t.toys}" />
+              <img src="/handmade-site/images/toy.jpg" alt="${t.toys}" />
               <h3>${t.toys}</h3>
               <p>${t.toysDesc}</p>
               <a href="#contacts">${t.order}</a>
             </div>
 
             <div class="card reveal reveal-right">
-              <img src="${base}images/other.jpg" alt="${t.other}" />
+              <img src="/handmade-site/images/other.jpg" alt="${t.other}" />
               <h3>${t.other}</h3>
               <p>${t.otherDesc}</p>
               <a href="#contacts">${t.order}</a>
@@ -138,12 +136,12 @@ function render() {
           <h2 class="text-3xl text-center mb-10 glow">${t.gallery}</h2>
 
           <div class="grid md:grid-cols-3 gap-6">
-            <img src="${base}images/g1.jpg" class="gallery-img reveal reveal-left" alt="Gallery 1" />
-            <img src="${base}images/g2.jpg" class="gallery-img reveal reveal-right" alt="Gallery 2" />
-            <img src="${base}images/g3.jpg" class="gallery-img reveal reveal-bottom" alt="Gallery 3" />
-            <img src="${base}images/g4.jpg" class="gallery-img reveal reveal-left" alt="Gallery 4" />
-            <img src="${base}images/g5.jpg" class="gallery-img reveal reveal-right" alt="Gallery 5" />
-            <img src="${base}images/g6.jpg" class="gallery-img reveal reveal-bottom" alt="Gallery 6" />
+            <img src="/handmade-site/images/g1.jpg" class="gallery-img reveal reveal-left" alt="Gallery 1" />
+            <img src="/handmade-site/images/g2.jpg" class="gallery-img reveal reveal-right" alt="Gallery 2" />
+            <img src="/handmade-site/images/g3.jpg" class="gallery-img reveal reveal-bottom" alt="Gallery 3" />
+            <img src="/handmade-site/images/g4.jpg" class="gallery-img reveal reveal-left" alt="Gallery 4" />
+            <img src="/handmade-site/images/g5.jpg" class="gallery-img reveal reveal-right" alt="Gallery 5" />
+            <img src="/handmade-site/images/g6.jpg" class="gallery-img reveal reveal-bottom" alt="Gallery 6" />
           </div>
         </div>
       </section>
