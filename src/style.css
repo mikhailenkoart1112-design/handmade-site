@@ -1,284 +1,203 @@
-@import "tailwindcss";
+import './style.css'
 
-html {
-  scroll-behavior: smooth;
+let lang = 'ua'
+
+const texts = {
+  ua: {
+    handmade: 'Ручна робота',
+    title: 'В’язані вироби ручної роботи',
+    desc: 'Пледи, іграшки та інші handmade-вироби',
+    view: 'Переглянути',
+    order: 'Замовити',
+    products: 'Наші вироби',
+    blankets: 'Пледи',
+    blanketsDesc: 'Теплі і затишні',
+    toys: 'Іграшки',
+    toysDesc: 'М’які handmade',
+    other: 'Інші вироби',
+    otherDesc: 'Під замовлення',
+    gallery: 'Галерея',
+    contacts: 'Контакти',
+    phone: 'Телефон',
+    telegram: 'Telegram',
+    instagram: 'Instagram',
+    call: 'Подзвонити',
+    langBtn: 'English',
+  },
+  en: {
+    handmade: 'Handmade',
+    title: 'Handmade knitted products',
+    desc: 'Blankets, toys and other handmade items',
+    view: 'View',
+    order: 'Order',
+    products: 'Our products',
+    blankets: 'Blankets',
+    blanketsDesc: 'Warm and cozy',
+    toys: 'Toys',
+    toysDesc: 'Soft handmade',
+    other: 'Other products',
+    otherDesc: 'Made to order',
+    gallery: 'Gallery',
+    contacts: 'Contacts',
+    phone: 'Phone',
+    telegram: 'Telegram',
+    instagram: 'Instagram',
+    call: 'Call',
+    langBtn: 'Українська',
+  },
 }
 
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  overflow-x: hidden;
+function render() {
+  const t = texts[lang]
+
+  document.querySelector('#app').innerHTML = `
+    <main
+      class="min-h-screen text-white"
+      style="
+        background:
+          linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)),
+          url('/handmade-site/images/bg.jpg');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+      "
+    >
+      <div class="fixed top-5 right-5 z-50">
+        <button id="langBtn" class="bg-white text-black px-4 py-2 rounded-2xl shadow hover:scale-105 transition">
+          ${t.langBtn}
+        </button>
+      </div>
+
+      <section class="px-6 py-16 md:px-12 lg:px-20 fade-in">
+        <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-10 items-center">
+          <div>
+            <p class="uppercase text-sm text-gray-300 mb-4">${t.handmade}</p>
+
+            <h1 class="text-4xl md:text-5xl font-bold mb-6 glow">
+              ${t.title}
+            </h1>
+
+            <p class="text-lg mb-8 text-gray-200">
+              ${t.desc}
+            </p>
+
+            <div class="flex gap-4 flex-wrap">
+              <a href="#products" class="bg-white text-black px-6 py-3 rounded-2xl hover:scale-105 transition">
+                ${t.view}
+              </a>
+
+              <a href="#contacts" class="border border-white px-6 py-3 rounded-2xl hover:bg-white hover:text-black transition">
+                ${t.order}
+              </a>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-3xl p-4 reveal reveal-right">
+            <img
+              src="/handmade-site/images/hero.jpg"
+              class="w-full h-[420px] object-cover rounded-2xl"
+              alt="Hero"
+            />
+          </div>
+        </div>
+      </section>
+
+      <section id="products" class="px-6 py-16">
+        <div class="max-w-6xl mx-auto">
+          <h2 class="text-3xl text-center mb-10 glow">${t.products}</h2>
+
+          <div class="grid md:grid-cols-3 gap-8">
+            <div class="card reveal reveal-left">
+              <img src="/handmade-site/images/blanket.jpg" alt="${t.blankets}" />
+              <h3>${t.blankets}</h3>
+              <p>${t.blanketsDesc}</p>
+              <a href="#contacts">${t.order}</a>
+            </div>
+
+            <div class="card reveal reveal-bottom">
+              <img src="/handmade-site/images/toy.jpg" alt="${t.toys}" />
+              <h3>${t.toys}</h3>
+              <p>${t.toysDesc}</p>
+              <a href="#contacts">${t.order}</a>
+            </div>
+
+            <div class="card reveal reveal-right">
+              <img src="/handmade-site/images/other.jpg" alt="${t.other}" />
+              <h3>${t.other}</h3>
+              <p>${t.otherDesc}</p>
+              <a href="#contacts">${t.order}</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="px-6 py-16">
+        <div class="max-w-6xl mx-auto">
+          <h2 class="text-3xl text-center mb-10 glow">${t.gallery}</h2>
+
+          <div class="grid md:grid-cols-3 gap-6">
+            <img src="/handmade-site/images/g1.jpg" class="gallery-img reveal reveal-left" alt="Gallery 1" />
+            <img src="/handmade-site/images/g2.jpg" class="gallery-img reveal reveal-right" alt="Gallery 2" />
+            <img src="/handmade-site/images/g3.jpg" class="gallery-img reveal reveal-bottom" alt="Gallery 3" />
+            <img src="/handmade-site/images/g4.jpg" class="gallery-img reveal reveal-left" alt="Gallery 4" />
+            <img src="/handmade-site/images/g5.jpg" class="gallery-img reveal reveal-right" alt="Gallery 5" />
+            <img src="/handmade-site/images/g6.jpg" class="gallery-img reveal reveal-bottom" alt="Gallery 6" />
+          </div>
+        </div>
+      </section>
+
+      <section id="contacts" class="px-6 py-16 text-center reveal reveal-bottom">
+        <h2 class="text-3xl mb-6 glow">${t.contacts}</h2>
+
+        <p class="mb-2">${t.phone}: +38082063627</p>
+        <p class="mb-2">${t.telegram}: @Tanua_Mih</p>
+        <p class="mb-2">${t.instagram}: @tanya_mukhajlenko</p>
+
+        <div class="flex justify-center gap-4 mt-6 flex-wrap">
+          <a href="https://t.me/Tanua_Mih" target="_blank" class="btn white">
+            Telegram
+          </a>
+
+          <a href="https://instagram.com/tanya_mukhajlenko" target="_blank" class="btn pink">
+            Instagram
+          </a>
+
+          <a href="tel:+38082063627" class="btn green">
+            ${t.call}
+          </a>
+        </div>
+      </section>
+    </main>
+  `
+
+  document.getElementById('langBtn').addEventListener('click', () => {
+    lang = lang === 'ua' ? 'en' : 'ua'
+    render()
+    setAnimations()
+  })
+
+  setAnimations()
 }
 
-.site {
-  min-height: 100vh;
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
+function setAnimations() {
+  const elements = document.querySelectorAll('.reveal')
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.intersectionRatio > 0.5) {
+          entry.target.classList.add('active')
+        } else if (entry.intersectionRatio < 0.2) {
+          entry.target.classList.remove('active')
+        }
+      })
+    },
+    {
+      threshold: [0.2, 0.5, 0.8],
+    }
+  )
+
+  elements.forEach((el) => observer.observe(el))
 }
 
-.section {
-  padding: 64px 24px;
-}
-
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.lang-wrap {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  z-index: 50;
-}
-
-.lang-btn {
-  background: #fff;
-  color: #000;
-  border: 0;
-  padding: 12px 18px;
-  border-radius: 18px;
-  cursor: pointer;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
-  transition: transform 0.25s ease;
-}
-
-.lang-btn:hover {
-  transform: scale(1.05);
-}
-
-.hero-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 40px;
-  align-items: center;
-}
-
-.eyebrow {
-  text-transform: uppercase;
-  font-size: 14px;
-  color: #d1d5db;
-  margin-bottom: 16px;
-}
-
-.hero-title {
-  font-size: 56px;
-  line-height: 1.05;
-  font-weight: 700;
-  margin: 0 0 24px;
-  text-shadow: 0 0 12px rgba(255, 255, 255, 0.22);
-}
-
-.hero-text {
-  font-size: 28px;
-  line-height: 1.5;
-  color: #e5e7eb;
-  margin-bottom: 32px;
-}
-
-.hero-actions,
-.contacts-actions {
-  display: flex;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-
-.hero-card {
-  background: #fff;
-  border-radius: 24px;
-  padding: 16px;
-  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.2);
-}
-
-.hero-image {
-  width: 100%;
-  height: 420px;
-  object-fit: cover;
-  border-radius: 18px;
-  display: block;
-}
-
-.section-title {
-  font-size: 46px;
-  text-align: center;
-  margin: 0 0 40px;
-  text-shadow: 0 0 12px rgba(255, 255, 255, 0.18);
-}
-
-.section-title.left {
-  text-align: left;
-}
-
-.cards-grid,
-.gallery-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
-}
-
-.card {
-  background: rgba(255, 255, 255, 0.92);
-  color: #000;
-  border-radius: 24px;
-  padding: 20px;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
-  transition: transform 0.35s ease, box-shadow 0.35s ease;
-}
-
-.card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 18px 38px rgba(0, 0, 0, 0.22);
-}
-
-.card img {
-  width: 100%;
-  height: 256px;
-  object-fit: cover;
-  border-radius: 16px;
-  margin-bottom: 16px;
-  display: block;
-}
-
-.card h3 {
-  font-size: 30px;
-  font-weight: 700;
-  margin: 0 0 12px;
-}
-
-.card p {
-  margin: 0 0 16px;
-  font-size: 24px;
-}
-
-.card a {
-  display: inline-block;
-  background: #000;
-  color: #fff;
-  padding: 12px 18px;
-  border-radius: 14px;
-  text-decoration: none;
-  transition: opacity 0.25s ease, transform 0.25s ease;
-}
-
-.card a:hover {
-  opacity: 0.92;
-  transform: scale(1.03);
-}
-
-.gallery-img {
-  width: 100%;
-  height: 260px;
-  object-fit: cover;
-  border-radius: 18px;
-  display: block;
-  transition: transform 0.35s ease, box-shadow 0.35s ease;
-}
-
-.gallery-img:hover {
-  transform: scale(1.04);
-  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.25);
-}
-
-.seo-box,
-.contacts-box {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(8px);
-  border-radius: 24px;
-  padding: 32px;
-}
-
-.seo-box p,
-.contact-line {
-  font-size: 24px;
-  line-height: 1.8;
-  margin: 0 0 14px;
-}
-
-.btn {
-  display: inline-block;
-  padding: 14px 22px;
-  border-radius: 16px;
-  text-decoration: none;
-  font-weight: 600;
-  transition: transform 0.25s ease, opacity 0.25s ease;
-}
-
-.btn:hover {
-  transform: scale(1.05);
-  opacity: 0.94;
-}
-
-.btn-light {
-  background: #fff;
-  color: #000;
-}
-
-.btn-outline {
-  background: transparent;
-  color: #fff;
-  border: 1px solid #fff;
-}
-
-.btn-pink {
-  background: #ec4899;
-  color: #fff;
-}
-
-.btn-green {
-  background: #22c55e;
-  color: #fff;
-}
-
-.reveal {
-  opacity: 0;
-  transition: all 0.8s ease;
-  will-change: transform, opacity;
-}
-
-.reveal.active {
-  opacity: 1;
-  transform: translate(0, 0);
-}
-
-.reveal-left {
-  transform: translateX(-70px);
-}
-
-.reveal-right {
-  transform: translateX(70px);
-}
-
-.reveal-bottom {
-  transform: translateY(70px);
-}
-
-@media (max-width: 900px) {
-  .hero-grid,
-  .cards-grid,
-  .gallery-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .hero-title,
-  .section-title {
-    font-size: 36px;
-  }
-
-  .hero-text,
-  .card p,
-  .seo-box p,
-  .contact-line {
-    font-size: 20px;
-  }
-
-  .card h3 {
-    font-size: 28px;
-  }
-
-  .card img,
-  .gallery-img,
-  .hero-image {
-    height: 220px;
-  }
-}
+render()
