@@ -17,6 +17,11 @@ const texts = {
     other: 'Інші вироби',
     otherDesc: 'Під замовлення',
     gallery: 'Галерея',
+    seoTitle: 'В’язані вироби ручної роботи для затишку, подарунків та декору',
+    seoText1:
+      'Ми створюємо в’язані вироби ручної роботи: теплі пледи, м’які іграшки, декор для дому та handmade подарунки під замовлення. Кожен виріб робиться акуратно, з любов’ю до деталей та з урахуванням ваших побажань.',
+    seoText2:
+      'У нас можна замовити в’язані пледи, іграшки ручної роботи, подарунки для дітей, затишні речі для інтер’єру та інші унікальні handmade-вироби. Це гарний варіант для подарунка, фотосесії, дитячої кімнати або домашнього затишку.',
     contacts: 'Контакти',
     phone: 'Телефон',
     telegram: 'Telegram',
@@ -38,6 +43,11 @@ const texts = {
     other: 'Other products',
     otherDesc: 'Made to order',
     gallery: 'Gallery',
+    seoTitle: 'Handmade knitted products for comfort, gifts and decor',
+    seoText1:
+      'We create handmade knitted products: warm blankets, soft toys, home decor and custom gifts. Each item is made carefully, with attention to detail and your wishes in mind.',
+    seoText2:
+      'Here you can order knitted blankets, handmade toys, gifts for children, cozy decor items and other unique handmade products. These items are perfect for gifts, photo shoots, children’s rooms and home comfort.',
     contacts: 'Contacts',
     phone: 'Phone',
     telegram: 'Telegram',
@@ -51,128 +61,149 @@ function render() {
   const t = texts[lang]
 
   document.querySelector('#app').innerHTML = `
-    <main class="min-h-screen text-white"
+    <main
+      class="site text-white"
       style="
         background:
-          linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)),
+          linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),
           url('/handmade-site/images/bg.jpg');
-        background-size: cover;
-        background-position: center;
-        background-attachment: fixed;
       "
     >
-
-      <div class="fixed top-5 right-5 z-50">
-        <button id="langBtn" class="bg-white text-black px-4 py-2 rounded-2xl shadow">
-          ${t.langBtn}
-        </button>
+      <div class="lang-wrap">
+        <button id="langBtn" class="lang-btn">${t.langBtn}</button>
       </div>
 
-      <!-- HERO -->
-      <section class="px-6 py-16">
-        <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-10 items-center">
-          <div>
-            <p class="uppercase text-sm text-gray-300 mb-4">${t.handmade}</p>
-            <h1 class="text-4xl md:text-5xl font-bold mb-6">${t.title}</h1>
-            <p class="text-lg mb-8 text-gray-200">${t.desc}</p>
+      <section class="hero section">
+        <div class="container hero-grid">
+          <div class="reveal reveal-left active-on-load">
+            <p class="eyebrow">${t.handmade}</p>
+            <h1 class="hero-title">${t.title}</h1>
+            <p class="hero-text">${t.desc}</p>
 
-            <div class="flex gap-4">
-              <a href="#products" class="bg-white text-black px-6 py-3 rounded-2xl">
-                ${t.view}
-              </a>
-
-              <a href="#contacts" class="border border-white px-6 py-3 rounded-2xl">
-                ${t.order}
-              </a>
+            <div class="hero-actions">
+              <a href="#products" class="btn btn-light">${t.view}</a>
+              <a href="#contacts" class="btn btn-outline">${t.order}</a>
             </div>
           </div>
 
-          <div class="bg-white rounded-3xl p-4">
-            <img src="/handmade-site/images/hero.jpg"
-              class="w-full h-[420px] object-cover rounded-2xl" />
+          <div class="hero-card reveal reveal-right active-on-load">
+            <img
+              src="/handmade-site/images/hero.jpg"
+              alt="В’язані вироби ручної роботи"
+              class="hero-image"
+            />
           </div>
         </div>
       </section>
 
-      <!-- PRODUCTS -->
-      <section id="products" class="px-6 py-16">
-        <div class="max-w-6xl mx-auto">
-          <h2 class="text-3xl text-center mb-10">${t.products}</h2>
+      <section id="products" class="section">
+        <div class="container">
+          <h2 class="section-title reveal reveal-bottom">${t.products}</h2>
 
-          <div class="grid md:grid-cols-3 gap-8">
-            <div>
-              <img src="/handmade-site/images/blanket.jpg" />
+          <div class="cards-grid">
+            <article class="card reveal reveal-left">
+              <img src="/handmade-site/images/blanket.jpg" alt="В’язаний плед ручної роботи" />
               <h3>${t.blankets}</h3>
               <p>${t.blanketsDesc}</p>
-            </div>
+              <a href="#contacts">${t.order}</a>
+            </article>
 
-            <div>
-              <img src="/handmade-site/images/toy.jpg" />
+            <article class="card reveal reveal-bottom">
+              <img src="/handmade-site/images/toy.jpg" alt="В’язана іграшка ручної роботи" />
               <h3>${t.toys}</h3>
               <p>${t.toysDesc}</p>
-            </div>
+              <a href="#contacts">${t.order}</a>
+            </article>
 
-            <div>
-              <img src="/handmade-site/images/other.jpg" />
+            <article class="card reveal reveal-right">
+              <img src="/handmade-site/images/other.jpg" alt="Інші handmade вироби" />
               <h3>${t.other}</h3>
               <p>${t.otherDesc}</p>
-            </div>
+              <a href="#contacts">${t.order}</a>
+            </article>
           </div>
         </div>
       </section>
 
-      <!-- ГАЛЕРЕЯ -->
-      <section class="px-6 py-16">
-        <div class="max-w-6xl mx-auto">
-          <h2 class="text-3xl text-center mb-10">${t.gallery}</h2>
+      <section class="section">
+        <div class="container">
+          <h2 class="section-title reveal reveal-bottom">${t.gallery}</h2>
 
-          <div class="grid md:grid-cols-3 gap-6">
-            <img src="/handmade-site/images/g1.jpg" />
-            <img src="/handmade-site/images/g2.jpg" />
-            <img src="/handmade-site/images/g3.jpg" />
-            <img src="/handmade-site/images/g4.jpg" />
-            <img src="/handmade-site/images/g5.jpg" />
-            <img src="/handmade-site/images/g6.jpg" />
+          <div class="gallery-grid">
+            <img src="/handmade-site/images/g1.jpg" class="gallery-img reveal reveal-left" alt="Галерея handmade 1" />
+            <img src="/handmade-site/images/g2.jpg" class="gallery-img reveal reveal-right" alt="Галерея handmade 2" />
+            <img src="/handmade-site/images/g3.jpg" class="gallery-img reveal reveal-bottom" alt="Галерея handmade 3" />
+            <img src="/handmade-site/images/g4.jpg" class="gallery-img reveal reveal-left" alt="Галерея handmade 4" />
+            <img src="/handmade-site/images/g5.jpg" class="gallery-img reveal reveal-right" alt="Галерея handmade 5" />
+            <img src="/handmade-site/images/g6.jpg" class="gallery-img reveal reveal-bottom" alt="Галерея handmade 6" />
           </div>
         </div>
       </section>
 
-      <!-- CONTACTS -->
-      <section id="contacts" class="px-6 py-16 text-center">
-        <h2 class="text-3xl mb-6">${t.contacts}</h2>
-
-        <p class="mb-2">${t.phone}: +38082063627</p>
-        <p class="mb-2">${t.telegram}: @Tanua_Mih</p>
-        <p class="mb-2">${t.instagram}: @tanya_mukhajlenko</p>
-
-        <div class="flex justify-center gap-4 mt-6 flex-wrap">
-
-          <a href="https://t.me/Tanua_Mih"
-             target="_blank"
-             class="bg-white text-black px-6 py-3 rounded-2xl">
-            Telegram
-          </a>
-
-          <a href="https://instagram.com/tanya_mukhajlenko"
-             target="_blank"
-             class="bg-pink-500 text-white px-6 py-3 rounded-2xl">
-            Instagram
-          </a>
-
-          <a href="tel:+38082063627"
-             class="bg-green-500 text-white px-6 py-3 rounded-2xl">
-            ${t.call}
-          </a>
-
+      <section class="section">
+        <div class="container">
+          <div class="seo-box reveal reveal-bottom">
+            <h2 class="section-title left">${t.seoTitle}</h2>
+            <p>${t.seoText1}</p>
+            <p>${t.seoText2}</p>
+          </div>
         </div>
       </section>
 
+      <section id="contacts" class="section">
+        <div class="container contacts-box reveal reveal-bottom">
+          <h2 class="section-title">${t.contacts}</h2>
+
+          <p class="contact-line">${t.phone}: +38082063627</p>
+          <p class="contact-line">${t.telegram}: @Tanua_Mih</p>
+          <p class="contact-line">${t.instagram}: @tanya_mukhajlenko</p>
+
+          <div class="contacts-actions">
+            <a href="https://t.me/Tanua_Mih" target="_blank" class="btn btn-light">Telegram</a>
+            <a href="https://instagram.com/tanya_mukhajlenko" target="_blank" class="btn btn-pink">Instagram</a>
+            <a href="tel:+38082063627" class="btn btn-green">${t.call}</a>
+          </div>
+        </div>
+      </section>
     </main>
   `
 
   document.getElementById('langBtn').addEventListener('click', () => {
     lang = lang === 'ua' ? 'en' : 'ua'
     render()
+    initReveal()
+  })
+
+  initReveal()
+}
+
+function initReveal() {
+  const elements = document.querySelectorAll('.reveal')
+  elements.forEach((el) => {
+    if (el.classList.contains('active-on-load')) {
+      el.classList.add('active')
+    } else {
+      el.classList.remove('active')
+    }
+  })
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.intersectionRatio > 0.35) {
+          entry.target.classList.add('active')
+        } else if (entry.intersectionRatio < 0.15 && !entry.target.classList.contains('active-on-load')) {
+          entry.target.classList.remove('active')
+        }
+      })
+    },
+    {
+      threshold: [0.15, 0.35, 0.7],
+    }
+  )
+
+  elements.forEach((el) => {
+    if (!el.classList.contains('active-on-load')) observer.observe(el)
   })
 }
 
