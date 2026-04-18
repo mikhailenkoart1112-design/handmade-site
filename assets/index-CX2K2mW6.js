@@ -94,26 +94,33 @@
         </div>
       </section>
 
-      <section id="contacts" class="px-6 py-16 text-center reveal reveal-bottom">
-        <h2 class="text-3xl mb-6 glow">${i.contacts}</h2>
+     <section id="contacts" class="px-6 py-16 text-center reveal">
+  <h2 class="text-3xl mb-6 glow">${i.contacts}</h2>
 
-        <p class="mb-2">${i.phone}: +38082063627</p>
-<p class="mb-2">${i.telegram}: @Tanua_Mik</p>
-        <p class="mb-2">${i.instagram}: @tanya_mukhajlenko</p>
+  <p class="mb-2">${i.phone}: +38082063627</p>
+  <p class="mb-2">${i.telegram}: @Tanua_Mik</p>
+  <p class="mb-2">${i.instagram}: @tanya_mukhajlenko</p>
 
-        <div class="flex justify-center gap-4 mt-6 flex-wrap">
-         <a href="https://t.me/Tanua_Mik" target="_blank" class="btn white">
-  Telegram
-</a>
+  <div class="flex justify-center gap-4 mt-6 flex-wrap">
 
-          <a href="https://instagram.com/tanya_mukhajlenko" target="_blank" class="btn pink">
-            Instagram
-          </a>
+    <a href="https://t.me/Tanua_Mik"
+       target="_blank"
+       class="btn white">
+      Telegram
+    </a>
 
-          <a href="tel:+38082063627" class="btn green">
-            ${i.call}
-          </a>
-        </div>
-      </section>
+    <a href="https://instagram.com/tanya_mukhajlenko"
+       target="_blank"
+       class="btn pink">
+      Instagram
+    </a>
+
+    <a href="tel:+38082063627"
+       class="btn green">
+      Подзвонити
+    </a>
+
+  </div>
+</section>
     </main>
   `,document.getElementById(`langBtn`).addEventListener(`click`,()=>{e=e===`ua`?`en`:`ua`,n()}),r()}function r(){let e=document.querySelectorAll(`.reveal`),t=new IntersectionObserver(e=>{e.forEach(e=>{e.intersectionRatio>.5?e.target.classList.add(`active`):e.intersectionRatio<.2&&e.target.classList.remove(`active`)})},{threshold:[.2,.5,.8]});e.forEach(e=>t.observe(e))}n();
