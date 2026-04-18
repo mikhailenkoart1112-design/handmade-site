@@ -146,27 +146,34 @@ function render() {
         </div>
       </section>
 
-      <section id="contacts" class="px-6 py-16 text-center reveal reveal-bottom">
-        <h2 class="text-3xl mb-6 glow">${t.contacts}</h2>
+     <section id="contacts" class="px-6 py-16 text-center reveal">
+  <h2 class="text-3xl mb-6 glow">${t.contacts}</h2>
 
-        <p class="mb-2">${t.phone}: +38082063627</p>
-<p class="mb-2">${t.telegram}: @Tanua_Mik</p>
-        <p class="mb-2">${t.instagram}: @tanya_mukhajlenko</p>
+  <p class="mb-2">${t.phone}: +38082063627</p>
+  <p class="mb-2">${t.telegram}: @Tanua_Mik</p>
+  <p class="mb-2">${t.instagram}: @tanya_mukhajlenko</p>
 
-        <div class="flex justify-center gap-4 mt-6 flex-wrap">
-         <a href="https://t.me/Tanua_Mik" target="_blank" class="btn white">
-  Telegram
-</a>
+  <div class="flex justify-center gap-4 mt-6 flex-wrap">
 
-          <a href="https://instagram.com/tanya_mukhajlenko" target="_blank" class="btn pink">
-            Instagram
-          </a>
+    <a href="https://t.me/Tanua_Mik"
+       target="_blank"
+       class="btn white">
+      Telegram
+    </a>
 
-          <a href="tel:+38082063627" class="btn green">
-            ${t.call}
-          </a>
-        </div>
-      </section>
+    <a href="https://instagram.com/tanya_mukhajlenko"
+       target="_blank"
+       class="btn pink">
+      Instagram
+    </a>
+
+    <a href="tel:+38082063627"
+       class="btn green">
+      Подзвонити
+    </a>
+
+  </div>
+</section>
     </main>
   `
 
