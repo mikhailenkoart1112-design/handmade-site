@@ -56,10 +56,10 @@ function render() {
     <button id="langBtn" class="lang-btn">${t.langBtn}</button>
 
     <section class="hero">
-      <div class="hero-left">
+      <div class="hero-left reveal reveal-left active-on-load">
         <p class="tag">${t.handmade}</p>
         <h1>${t.title}</h1>
-        <p>${t.desc}</p>
+        <p class="hero-desc">${t.desc}</p>
 
         <div class="btns">
           <a href="#products" class="btn white">${t.view}</a>
@@ -67,56 +67,56 @@ function render() {
         </div>
       </div>
 
-      <div class="hero-right">
+      <div class="hero-right reveal reveal-right active-on-load">
         <img src="/handmade-site/images/hero.jpg" />
       </div>
     </section>
 
     <section id="products">
-      <h2>${t.products}</h2>
+      <h2 class="section-title reveal reveal-bottom">${t.products}</h2>
 
       <div class="cards">
-        <div class="card">
-          <img src="/handmade-site/images/blanket.jpg" />
+        <div class="card reveal reveal-left">
+          <img src="/handmade-site/images/blanket.jpg">
           <h3>${t.blankets}</h3>
           <p>${t.blanketsDesc}</p>
         </div>
 
-        <div class="card">
-          <img src="/handmade-site/images/toy.jpg" />
+        <div class="card reveal reveal-bottom">
+          <img src="/handmade-site/images/toy.jpg">
           <h3>${t.toys}</h3>
           <p>${t.toysDesc}</p>
         </div>
 
-        <div class="card">
-          <img src="/handmade-site/images/other.jpg" />
+        <div class="card reveal reveal-right">
+          <img src="/handmade-site/images/other.jpg">
           <h3>${t.other}</h3>
           <p>${t.otherDesc}</p>
         </div>
       </div>
     </section>
 
-    <section>
-      <h2>${t.gallery}</h2>
+    <section class="gallery-section">
+      <h2 class="section-title reveal reveal-bottom">${t.gallery}</h2>
 
       <div class="gallery">
-        <img src="/handmade-site/images/g1.jpg" />
-        <img src="/handmade-site/images/g2.jpg" />
-        <img src="/handmade-site/images/g3.jpg" />
-        <img src="/handmade-site/images/g4.jpg" />
-        <img src="/handmade-site/images/g5.jpg" />
-        <img src="/handmade-site/images/g6.jpg" />
+        <img src="/handmade-site/images/g1.jpg" class="gallery-img reveal reveal-left">
+        <img src="/handmade-site/images/g2.jpg" class="gallery-img reveal reveal-right">
+        <img src="/handmade-site/images/g3.jpg" class="gallery-img reveal reveal-bottom">
+        <img src="/handmade-site/images/g4.jpg" class="gallery-img reveal reveal-left">
+        <img src="/handmade-site/images/g5.jpg" class="gallery-img reveal reveal-right">
+        <img src="/handmade-site/images/g6.jpg" class="gallery-img reveal reveal-bottom">
       </div>
     </section>
 
-    <section id="contacts">
-      <h2>${t.contacts}</h2>
+    <section id="contacts" class="reveal reveal-bottom">
+      <h2 class="contacts-title">${t.contacts}</h2>
 
-      <p>${t.phone}: +38082063627</p>
-      <p>${t.telegram}: @Tanua_Mih</p>
-      <p>${t.instagram}: @tanya_mukhajlenko</p>
+      <p class="contact-line">${t.phone}: +38082063627</p>
+      <p class="contact-line">${t.telegram}: @Tanua_Mih</p>
+      <p class="contact-line">${t.instagram}: @tanya_mukhajlenko</p>
 
-      <div class="btns">
+      <div class="contacts-btns">
         <a href="https://t.me/Tanua_Mih" class="btn white">Telegram</a>
         <a href="https://instagram.com/tanya_mukhajlenko" class="btn pink">Instagram</a>
         <a href="tel:+38082063627" class="btn green">${t.call}</a>
@@ -130,6 +130,42 @@ function render() {
     lang = lang === 'ua' ? 'en' : 'ua'
     render()
   }
+
+  initReveal()
+}
+
+function initReveal() {
+  const elements = document.querySelectorAll('.reveal')
+
+  elements.forEach((el) => {
+    if (el.classList.contains('active-on-load')) {
+      el.classList.add('active')
+    } else {
+      el.classList.remove('active')
+    }
+  })
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.intersectionRatio > 0.35) {
+          entry.target.classList.add('active')
+        } else if (
+          entry.intersectionRatio < 0.12 &&
+          !entry.target.classList.contains('active-on-load')
+        ) {
+          entry.target.classList.remove('active')
+        }
+      })
+    },
+    {
+      threshold: [0.12, 0.35, 0.7],
+    }
+  )
+
+  elements.forEach((el) => {
+    if (!el.classList.contains('active-on-load')) observer.observe(el)
+  })
 }
 
 render()
