@@ -51,8 +51,7 @@ function render() {
   const t = texts[lang]
 
   document.querySelector('#app').innerHTML = `
-    <main
-      class="min-h-screen text-white"
+    <main class="min-h-screen text-white"
       style="
         background:
           linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)),
@@ -64,25 +63,20 @@ function render() {
     >
 
       <div class="fixed top-5 right-5 z-50">
-        <button id="langBtn" class="bg-white text-black px-4 py-2 rounded-2xl shadow hover:scale-105 transition">
+        <button id="langBtn" class="bg-white text-black px-4 py-2 rounded-2xl shadow">
           ${t.langBtn}
         </button>
       </div>
 
-      <section class="px-6 py-16 md:px-12 lg:px-20">
+      <!-- HERO -->
+      <section class="px-6 py-16">
         <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-10 items-center">
           <div>
             <p class="uppercase text-sm text-gray-300 mb-4">${t.handmade}</p>
+            <h1 class="text-4xl md:text-5xl font-bold mb-6">${t.title}</h1>
+            <p class="text-lg mb-8 text-gray-200">${t.desc}</p>
 
-            <h1 class="text-4xl md:text-5xl font-bold mb-6">
-              ${t.title}
-            </h1>
-
-            <p class="text-lg mb-8 text-gray-200">
-              ${t.desc}
-            </p>
-
-            <div class="flex gap-4 flex-wrap">
+            <div class="flex gap-4">
               <a href="#products" class="bg-white text-black px-6 py-3 rounded-2xl">
                 ${t.view}
               </a>
@@ -94,15 +88,13 @@ function render() {
           </div>
 
           <div class="bg-white rounded-3xl p-4">
-            <img
-              src="/handmade-site/images/hero.jpg"
-              class="w-full h-[420px] object-cover rounded-2xl"
-              alt="Hero"
-            />
+            <img src="/handmade-site/images/hero.jpg"
+              class="w-full h-[420px] object-cover rounded-2xl" />
           </div>
         </div>
       </section>
 
+      <!-- PRODUCTS -->
       <section id="products" class="px-6 py-16">
         <div class="max-w-6xl mx-auto">
           <h2 class="text-3xl text-center mb-10">${t.products}</h2>
@@ -129,6 +121,23 @@ function render() {
         </div>
       </section>
 
+      <!-- ГАЛЕРЕЯ -->
+      <section class="px-6 py-16">
+        <div class="max-w-6xl mx-auto">
+          <h2 class="text-3xl text-center mb-10">${t.gallery}</h2>
+
+          <div class="grid md:grid-cols-3 gap-6">
+            <img src="/handmade-site/images/g1.jpg" />
+            <img src="/handmade-site/images/g2.jpg" />
+            <img src="/handmade-site/images/g3.jpg" />
+            <img src="/handmade-site/images/g4.jpg" />
+            <img src="/handmade-site/images/g5.jpg" />
+            <img src="/handmade-site/images/g6.jpg" />
+          </div>
+        </div>
+      </section>
+
+      <!-- CONTACTS -->
       <section id="contacts" class="px-6 py-16 text-center">
         <h2 class="text-3xl mb-6">${t.contacts}</h2>
 
