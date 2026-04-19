@@ -431,4 +431,16 @@ body {
   .loader-text {
     font-size: 17px;
   }
+}.seo-text {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 60px 20px;
+  font-size: 20px;
+  line-height: 1.6;
+}
+
+.seo-text h2 {
+  font-size: 36px;
+  margin-bottom: 20px;
+  text-align: center;
 }
