@@ -8,7 +8,7 @@ body {
 
 .site {
   background:
-    linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)),
+    linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)),
     url('/handmade-site/images/bg.jpg');
   background-size: cover;
   background-position: center;
@@ -40,12 +40,12 @@ body {
   align-items: center;
   max-width: 1500px;
   margin: 0 auto;
-  padding: 60px 20px 120px;
-  gap: 24px;
+  padding: 60px 20px 140px;
+  gap: 20px;
 }
 
 .hero-left {
-  max-width: 700px;
+  max-width: 720px;
 }
 
 .tag {
@@ -54,7 +54,7 @@ body {
 }
 
 .hero-left h1 {
-  font-size: 66px;
+  font-size: 68px;
   margin: 0 0 24px;
   line-height: 1.05;
 }
@@ -66,13 +66,15 @@ body {
 }
 
 .hero-right {
-  margin-left: -40px;
+  margin-left: -70px;
 }
 
-.hero-right img {
-  width: 520px;
+.hero-img {
+  width: 580px;
+  height: auto;
   border-radius: 28px;
-  box-shadow: 0 18px 42px rgba(0,0,0,0.28);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.3);
+  display: block;
 }
 
 /* buttons */
@@ -84,10 +86,25 @@ body {
   font-size: 22px;
 }
 
-.white { background: white; color: black; }
-.pink { background: #ec4899; color: white; }
-.green { background: #22c55e; color: white; }
-.outline { border: 1px solid white; color: white; }
+.white {
+  background: white;
+  color: black;
+}
+
+.pink {
+  background: #ec4899;
+  color: white;
+}
+
+.green {
+  background: #22c55e;
+  color: white;
+}
+
+.outline {
+  border: 1px solid white;
+  color: white;
+}
 
 .btns {
   display: flex;
@@ -105,7 +122,7 @@ body {
 
 .section-title {
   text-align: center;
-  font-size: 44px;
+  font-size: 48px;
   margin-bottom: 34px;
 }
 
@@ -123,7 +140,7 @@ body {
   border-radius: 24px;
   width: 320px;
   text-align: center;
-  box-shadow: 0 16px 36px rgba(0,0,0,0.22);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.22);
 }
 
 .card img {
@@ -148,7 +165,7 @@ body {
 .gallery-section {
   max-width: 1500px;
   margin: 0 auto;
-  padding: 10px 20px 90px;
+  padding: 10px 20px 100px;
 }
 
 .gallery {
@@ -162,25 +179,25 @@ body {
   height: 280px;
   object-fit: cover;
   border-radius: 18px;
-  box-shadow: 0 12px 28px rgba(0,0,0,0.22);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.22);
 }
 
 /* contacts */
 #contacts {
-  max-width: 1050px;
+  max-width: 1100px;
   margin: 0 auto;
-  padding: 80px 20px 120px;
+  padding: 90px 20px 130px;
   text-align: center;
-  transform: translateX(70px);
+  transform: translateX(90px);
 }
 
 .contacts-title {
-  font-size: 56px;
-  margin-bottom: 28px;
+  font-size: 62px;
+  margin-bottom: 30px;
 }
 
 .contact-line {
-  font-size: 28px;
+  font-size: 30px;
   line-height: 1.8;
   margin: 0;
 }
@@ -189,13 +206,13 @@ body {
   display: flex;
   justify-content: center;
   gap: 18px;
-  margin-top: 34px;
+  margin-top: 38px;
   flex-wrap: wrap;
 }
 
 .contacts-btns .btn {
-  font-size: 24px;
-  padding: 16px 28px;
+  font-size: 26px;
+  padding: 18px 30px;
 }
 
 /* animations */
@@ -227,16 +244,16 @@ body {
   .hero {
     flex-direction: column;
     text-align: center;
-    padding: 50px 20px 90px;
+    padding: 50px 20px 100px;
   }
 
   .hero-right {
     margin-left: 0;
   }
 
-  .hero-right img {
+  .hero-img {
     width: 100%;
-    max-width: 520px;
+    max-width: 580px;
   }
 
   #contacts {
@@ -275,33 +292,4 @@ body {
   .btn {
     font-size: 18px;
   }
-}/* ===== COLLAGE (як у відео) ===== */
-.collage {
-  width: 420px;
-  height: 420px;
-  background: white;
-  border-radius: 28px;
-  padding: 16px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
-  gap: 10px;
-  box-shadow: 0 18px 40px rgba(0,0,0,0.3);
-}
-
-.collage img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 14px;
-}
-
-/* позиція справа */
-.hero-right {
-  margin-left: -40px;
-}.hero-img {
-  width: 550px;
-  height: auto;
-  border-radius: 28px;
-  box-shadow: 0 20px 45px rgba(0,0,0,0.3);
 }
