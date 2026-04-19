@@ -68,8 +68,15 @@ function render() {
       </div>
 
       <div class="hero-right reveal reveal-right active-on-load">
-        <img src="/handmade-site/images/hero.jpg" />
-      </div>
+
+  <div class="collage">
+    <img src="/handmade-site/images/g1.jpg">
+    <img src="/handmade-site/images/g2.jpg">
+    <img src="/handmade-site/images/g3.jpg">
+    <img src="/handmade-site/images/g4.jpg">
+  </div>
+
+</div>
     </section>
 
     <section id="products">
