@@ -111,14 +111,14 @@ function render() {
       <section id="contacts" class="reveal reveal-bottom">
         <h2 class="contacts-title">${t.contacts}</h2>
 
-        <p class="contact-line">${t.phone}: +38082063627</p>
+        <p class="contact-line">${t.phone}: +380682063627</p>
         <p class="contact-line">${t.telegram}: @Tanua_Mih</p>
         <p class="contact-line">${t.instagram}: @tanya_mukhajlenko</p>
 
         <div class="contacts-btns">
           <a href="https://t.me/Tanua_Mih" target="_blank" class="btn white">Telegram</a>
           <a href="https://instagram.com/tanya_mukhajlenko" target="_blank" class="btn pink">Instagram</a>
-          <a href="tel:+38082063627" class="btn green">${t.call}</a>
+          <a href="tel:+380682063627" class="btn green">${t.call}</a>
         </div>
       </section>
     </main>
