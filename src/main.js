@@ -23,6 +23,7 @@ const texts = {
     instagram: 'Instagram',
     call: 'Подзвонити',
     langBtn: 'English',
+    loading: 'Завантаження...',
   },
   en: {
     handmade: 'Handmade',
@@ -44,6 +45,7 @@ const texts = {
     instagram: 'Instagram',
     call: 'Call',
     langBtn: 'Українська',
+    loading: 'Loading...',
   },
 }
 
@@ -51,6 +53,20 @@ function render() {
   const t = texts[lang]
 
   document.querySelector('#app').innerHTML = `
+    <div id="siteLoader" class="site-loader">
+      <div class="loader-content">
+        <div class="yarn-ball">
+          <div class="yarn-line line-1"></div>
+          <div class="yarn-line line-2"></div>
+          <div class="yarn-line line-3"></div>
+          <div class="yarn-line line-4"></div>
+          <div class="yarn-line line-5"></div>
+        </div>
+        <div class="loader-title">${t.handmade}</div>
+        <div class="loader-subtitle">${t.loading}</div>
+      </div>
+    </div>
+
     <main class="site">
       <button id="langBtn" class="lang-btn">${t.langBtn}</button>
 
@@ -130,6 +146,7 @@ function render() {
   }
 
   initReveal()
+  initLoader()
 }
 
 function initReveal() {
@@ -166,6 +183,18 @@ function initReveal() {
       observer.observe(el)
     }
   })
+}
+
+function initLoader() {
+  const loader = document.getElementById('siteLoader')
+  if (!loader) return
+
+  setTimeout(() => {
+    loader.classList.add('hide')
+    setTimeout(() => {
+      loader.remove()
+    }, 800)
+  }, 1800)
 }
 
 render()
