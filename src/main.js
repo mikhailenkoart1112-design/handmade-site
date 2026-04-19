@@ -23,7 +23,8 @@ const texts = {
     instagram: 'Instagram',
     call: 'Подзвонити',
     langBtn: 'English',
-    loading: 'Завантаження...',
+    loadingTitle: 'Ручна робота',
+    loadingText: 'Завантаження сайту...',
   },
   en: {
     handmade: 'Handmade',
@@ -45,7 +46,8 @@ const texts = {
     instagram: 'Instagram',
     call: 'Call',
     langBtn: 'Українська',
-    loading: 'Loading...',
+    loadingTitle: 'Handmade',
+    loadingText: 'Loading website...',
   },
 }
 
@@ -54,16 +56,16 @@ function render() {
 
   document.querySelector('#app').innerHTML = `
     <div id="siteLoader" class="site-loader">
-      <div class="loader-content">
-        <div class="yarn-ball">
-          <div class="yarn-line line-1"></div>
-          <div class="yarn-line line-2"></div>
-          <div class="yarn-line line-3"></div>
-          <div class="yarn-line line-4"></div>
-          <div class="yarn-line line-5"></div>
+      <div class="loader-box">
+        <div class="hook-wrap">
+          <div class="hook-stick"></div>
+          <div class="hook-head"></div>
+          <div class="thread thread-1"></div>
+          <div class="thread thread-2"></div>
+          <div class="thread thread-3"></div>
         </div>
-        <div class="loader-title">${t.handmade}</div>
-        <div class="loader-subtitle">${t.loading}</div>
+        <div class="loader-title">${t.loadingTitle}</div>
+        <div class="loader-text">${t.loadingText}</div>
       </div>
     </div>
 
@@ -191,10 +193,8 @@ function initLoader() {
 
   setTimeout(() => {
     loader.classList.add('hide')
-    setTimeout(() => {
-      loader.remove()
-    }, 800)
-  }, 1800)
+    setTimeout(() => loader.remove(), 700)
+  }, 1700)
 }
 
 render()
