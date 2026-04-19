@@ -299,4 +299,9 @@ body {
 /* позиція справа */
 .hero-right {
   margin-left: -40px;
+}.hero-img {
+  width: 550px;
+  height: auto;
+  border-radius: 28px;
+  box-shadow: 0 20px 45px rgba(0,0,0,0.3);
 }
