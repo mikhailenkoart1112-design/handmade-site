@@ -9,7 +9,7 @@ body {
 .site {
   background:
     linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)),
-    url('/handmade-site/images/bg.jpg');
+    url('/images/bg.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -426,7 +426,7 @@ body {
     height: 320px;
   }
 
-  .card img {
+  .card img { 
     height: 320px;
   }
 }
