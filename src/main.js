@@ -85,7 +85,7 @@ function render() {
         </div>
 
         <div class="hero-right reveal reveal-right active-on-load">
-          <img src="/handmade-site/images/hero.jpg" class="hero-img" alt="Hero" />
+          <img src="/images/hero.jpg" class="hero-img" alt="В’язані вироби ручної роботи" />
         </div>
       </section>
 
@@ -94,19 +94,19 @@ function render() {
 
         <div class="cards">
           <div class="card reveal reveal-left">
-            <img src="/handmade-site/images/blanket.jpg" alt="${t.blankets}" />
+            <img src="/images/blanket.jpg" alt="В’язаний плед ручної роботи" />
             <h3>${t.blankets}</h3>
             <p>${t.blanketsDesc}</p>
           </div>
 
           <div class="card reveal reveal-bottom">
-            <img src="/handmade-site/images/toy.jpg" alt="${t.toys}" />
+            <img src="/images/toy.jpg" alt="В’язана іграшка ручної роботи" />
             <h3>${t.toys}</h3>
             <p>${t.toysDesc}</p>
           </div>
 
           <div class="card reveal reveal-right">
-            <img src="/handmade-site/images/other.jpg" alt="${t.other}" />
+            <img src="/images/other.jpg" alt="Інші в’язані вироби ручної роботи" />
             <h3>${t.other}</h3>
             <p>${t.otherDesc}</p>
           </div>
@@ -117,12 +117,12 @@ function render() {
         <h2 class="section-title reveal reveal-bottom">${t.gallery}</h2>
 
         <div class="gallery">
-          <img src="/handmade-site/images/g1.jpg" class="gallery-img reveal reveal-left" alt="Gallery 1" />
-          <img src="/handmade-site/images/g2.jpg" class="gallery-img reveal reveal-right" alt="Gallery 2" />
-          <img src="/handmade-site/images/g3.jpg" class="gallery-img reveal reveal-bottom" alt="Gallery 3" />
-          <img src="/handmade-site/images/g4.jpg" class="gallery-img reveal reveal-left" alt="Gallery 4" />
-          <img src="/handmade-site/images/g5.jpg" class="gallery-img reveal reveal-right" alt="Gallery 5" />
-          <img src="/handmade-site/images/g6.jpg" class="gallery-img reveal reveal-bottom" alt="Gallery 6" />
+          <img src="/images/g1.jpg" class="gallery-img reveal reveal-left" alt="В’язані пінетки ручної роботи" />
+          <img src="/images/g2.jpg" class="gallery-img reveal reveal-right" alt="В’язаний ведмедик ручної роботи" />
+          <img src="/images/g3.jpg" class="gallery-img reveal reveal-bottom" alt="В’язана іграшка амігурумі" />
+          <img src="/images/g4.jpg" class="gallery-img reveal reveal-left" alt="В’язана м’яка іграшка" />
+          <img src="/images/g5.jpg" class="gallery-img reveal reveal-right" alt="В’язаний одяг ручної роботи" />
+          <img src="/images/g6.jpg" class="gallery-img reveal reveal-bottom" alt="В’язані тапочки ручної роботи" />
         </div>
       </section>
 
