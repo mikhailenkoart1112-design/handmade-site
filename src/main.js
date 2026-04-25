@@ -1,4 +1,5 @@
 import './style.css'
+import { defaultData } from './data'
 
 let lang = 'ua'
 
@@ -10,12 +11,6 @@ const texts = {
     view: 'Переглянути',
     order: 'Замовити',
     products: 'Наші вироби',
-    blankets: 'Пледи',
-    blanketsDesc: 'Теплі і затишні',
-    toys: 'Іграшки',
-    toysDesc: 'М’які handmade',
-    other: 'Інші вироби',
-    otherDesc: 'Під замовлення',
     gallery: 'Галерея',
     contacts: 'Контакти',
     phone: 'Телефон',
@@ -33,12 +28,6 @@ const texts = {
     view: 'View',
     order: 'Order',
     products: 'Our products',
-    blankets: 'Blankets',
-    blanketsDesc: 'Warm and cozy',
-    toys: 'Toys',
-    toysDesc: 'Soft handmade',
-    other: 'Other',
-    otherDesc: 'Custom made',
     gallery: 'Gallery',
     contacts: 'Contacts',
     phone: 'Phone',
@@ -51,8 +40,23 @@ const texts = {
   },
 }
 
+function getData() {
+  const saved = localStorage.getItem('siteData')
+
+  if (!saved) {
+    return defaultData
+  }
+
+  try {
+    return JSON.parse(saved)
+  } catch {
+    return defaultData
+  }
+}
+
 function render() {
   const t = texts[lang]
+  const data = getData()
 
   document.querySelector('#app').innerHTML = `
     <div id="siteLoader" class="site-loader">
@@ -85,7 +89,11 @@ function render() {
         </div>
 
         <div class="hero-right reveal reveal-right active-on-load">
-          <img src="/images/hero.jpg" class="hero-img" alt="В’язані вироби ручної роботи" />
+          <img
+            src="/images/hero.jpg"
+            class="hero-img"
+            alt="В’язані вироби ручної роботи PlushByTanya"
+          />
         </div>
       </section>
 
@@ -93,23 +101,26 @@ function render() {
         <h2 class="section-title reveal reveal-bottom">${t.products}</h2>
 
         <div class="cards">
-          <div class="card reveal reveal-left">
-            <img src="/images/blanket.jpg" alt="В’язаний плед ручної роботи" />
-            <h3>${t.blankets}</h3>
-            <p>${t.blanketsDesc}</p>
-          </div>
-
-          <div class="card reveal reveal-bottom">
-            <img src="/images/toy.jpg" alt="В’язана іграшка ручної роботи" />
-            <h3>${t.toys}</h3>
-            <p>${t.toysDesc}</p>
-          </div>
-
-          <div class="card reveal reveal-right">
-            <img src="/images/other.jpg" alt="Інші в’язані вироби ручної роботи" />
-            <h3>${t.other}</h3>
-            <p>${t.otherDesc}</p>
-          </div>
+          ${data.products
+            .map(
+              (product, index) => `
+                <div class="card reveal ${
+                  index % 3 === 0
+                    ? 'reveal-left'
+                    : index % 3 === 1
+                      ? 'reveal-bottom'
+                      : 'reveal-right'
+                }">
+                  <img
+                    src="${product.image}"
+                    alt="${lang === 'ua' ? product.titleUa : product.titleEn}"
+                  />
+                  <h3>${lang === 'ua' ? product.titleUa : product.titleEn}</h3>
+                  <p>${lang === 'ua' ? product.descUa : product.descEn}</p>
+                </div>
+              `
+            )
+            .join('')}
         </div>
       </section>
 
@@ -117,12 +128,24 @@ function render() {
         <h2 class="section-title reveal reveal-bottom">${t.gallery}</h2>
 
         <div class="gallery">
-          <img src="/images/g1.jpg" class="gallery-img reveal reveal-left" alt="В’язані пінетки ручної роботи" />
-          <img src="/images/g2.jpg" class="gallery-img reveal reveal-right" alt="В’язаний ведмедик ручної роботи" />
-          <img src="/images/g3.jpg" class="gallery-img reveal reveal-bottom" alt="В’язана іграшка амігурумі" />
-          <img src="/images/g4.jpg" class="gallery-img reveal reveal-left" alt="В’язана м’яка іграшка" />
-          <img src="/images/g5.jpg" class="gallery-img reveal reveal-right" alt="В’язаний одяг ручної роботи" />
-          <img src="/images/g6.jpg" class="gallery-img reveal reveal-bottom" alt="В’язані тапочки ручної роботи" />
+          ${data.gallery
+  .filter((image) => image && image.trim() !== '')
+  .map(
+    (image, index) => `
+      <img
+        src="${image}"
+        class="gallery-img reveal ${
+          index % 3 === 0
+            ? 'reveal-left'
+            : index % 3 === 1
+              ? 'reveal-right'
+              : 'reveal-bottom'
+        }"
+        alt="Галерея PlushByTanya ${index + 1}"
+      />
+    `
+  )
+  .join('')}
         </div>
       </section>
 
@@ -134,9 +157,15 @@ function render() {
         <p class="contact-line">${t.instagram}: @tanya_mukhajlenko</p>
 
         <div class="contacts-btns">
-          <a href="https://t.me/Tanua_Mih" target="_blank" class="btn white">Telegram</a>
-          <a href="https://instagram.com/tanya_mukhajlenko" target="_blank" class="btn pink">Instagram</a>
-          <a href="tel:+380682063627" class="btn green">${t.call}</a>
+          <a href="https://t.me/Tanua_Mih" target="_blank" class="btn white">
+            Telegram
+          </a>
+          <a href="https://instagram.com/tanya_mukhajlenko" target="_blank" class="btn pink">
+            Instagram
+          </a>
+          <a href="tel:+380682063627" class="btn green">
+            ${t.call}
+          </a>
         </div>
       </section>
     </main>
