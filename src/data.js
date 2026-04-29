@@ -19,7 +19,7 @@ export const defaultData = {
       titleEn: 'Clothes',
       descUa: 'Стильні вʼязані речі',
       descEn: 'Stylish handmade clothes',
-      image: '/images/clothes.jpg',
+      image: '/images/other.jpg',
     },
   ],
 
@@ -32,10 +32,4 @@ export const defaultData = {
     '/images/g6.jpg',
     '/images/g7.jpg',
   ],
-
-  titleUa: 'Одяг',
-  titleEn: 'Clothes',
-  descUa: 'Стильні вʼязані речі',
-  descEn: 'Stylish handmade clothes',
-  image: '/images/other.jpg',
 }
