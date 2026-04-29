@@ -14,6 +14,13 @@ export const defaultData = {
       descEn: 'Soft handmade',
       image: '/images/toy.jpg',
     },
+    {
+      titleUa: 'Одяг',
+      titleEn: 'Clothes',
+      descUa: 'Стильні вʼязані речі',
+      descEn: 'Stylish handmade clothes',
+      image: '/images/clothes.jpg',
+    },
   ],
 
   gallery: [
