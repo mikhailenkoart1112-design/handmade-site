@@ -20,6 +20,7 @@ const texts = {
     langBtn: 'English',
     loadingTitle: 'Ручна робота',
     loadingText: 'Завантаження сайту...',
+    orderTitle: 'Оформити замовлення',
   },
   en: {
     handmade: 'Handmade',
@@ -37,15 +38,14 @@ const texts = {
     langBtn: 'Українська',
     loadingTitle: 'Handmade',
     loadingText: 'Loading website...',
+    orderTitle: 'Place an order',
   },
 }
 
 function getData() {
   const saved = localStorage.getItem('siteData')
 
-  if (!saved) {
-    return defaultData
-  }
+  if (!saved) return defaultData
 
   try {
     return JSON.parse(saved)
@@ -84,7 +84,7 @@ function render() {
 
           <div class="btns">
             <a href="#products" class="btn white">${t.view}</a>
-            <a href="#contacts" class="btn outline">${t.order}</a>
+            <a href="#order" class="btn outline">${t.order}</a>
           </div>
         </div>
 
@@ -129,23 +129,73 @@ function render() {
 
         <div class="gallery">
           ${data.gallery
-  .filter((image) => image && image.trim() !== '')
-  .map(
-    (image, index) => `
-      <img
-        src="${image}"
-        class="gallery-img reveal ${
-          index % 3 === 0
-            ? 'reveal-left'
-            : index % 3 === 1
-              ? 'reveal-right'
-              : 'reveal-bottom'
-        }"
-        alt="Галерея PlushByTanya ${index + 1}"
-      />
-    `
-  )
-  .join('')}
+            .filter((image) => image && image.trim() !== '')
+            .map(
+              (image, index) => `
+                <img
+                  src="${image}"
+                  class="gallery-img reveal ${
+                    index % 3 === 0
+                      ? 'reveal-left'
+                      : index % 3 === 1
+                        ? 'reveal-right'
+                        : 'reveal-bottom'
+                  }"
+                  alt="Галерея PlushByTanya ${index + 1}"
+                />
+              `
+            )
+            .join('')}
+        </div>
+      </section>
+
+      <section id="order" class="order-section reveal reveal-bottom">
+        <h2 class="section-title">${t.orderTitle}</h2>
+
+        <div class="order-card">
+          <label>
+            Ім’я
+            <input id="orderFirstName" placeholder="Введіть ім’я" />
+          </label>
+
+          <label>
+            Прізвище
+            <input id="orderLastName" placeholder="Введіть прізвище" />
+          </label>
+
+          <label>
+            По батькові
+            <input id="orderMiddleName" placeholder="Введіть по батькові" />
+          </label>
+
+          <label>
+            Телефон
+            <input id="orderPhone" placeholder="+380..." />
+          </label>
+
+          <label>
+            Область
+            <input id="orderRegion" placeholder="Напр. Київська" />
+          </label>
+
+          <label>
+            Місто / село
+            <input id="orderCity" placeholder="Напр. Київ" />
+          </label>
+
+          <label>
+            Відділення Нової Пошти
+            <input id="orderPost" placeholder="Напр. №12" />
+          </label>
+
+          <label>
+            Коментар до замовлення
+            <textarea id="orderComment" placeholder="Що саме хочете замовити?"></textarea>
+          </label>
+
+          <button id="sendOrderBtn" class="order-btn">
+            Надіслати замовлення
+          </button>
         </div>
       </section>
 
@@ -174,6 +224,14 @@ function render() {
   document.getElementById('langBtn').onclick = () => {
     lang = lang === 'ua' ? 'en' : 'ua'
     render()
+  }
+
+  const sendOrderBtn = document.getElementById('sendOrderBtn')
+
+  if (sendOrderBtn) {
+    sendOrderBtn.onclick = () => {
+      alert('Форма готова. Наступний крок — підключити базу для замовлень.')
+    }
   }
 
   initReveal()
