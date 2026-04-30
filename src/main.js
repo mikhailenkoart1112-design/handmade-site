@@ -230,8 +230,30 @@ function render() {
 
   if (sendOrderBtn) {
     sendOrderBtn.onclick = () => {
-      alert('Форма готова. Наступний крок — підключити базу для замовлень.')
-    }
+  const firstName = document.getElementById('orderFirstName').value
+  const lastName = document.getElementById('orderLastName').value
+  const middleName = document.getElementById('orderMiddleName').value
+  const phone = document.getElementById('orderPhone').value
+  const region = document.getElementById('orderRegion').value
+  const city = document.getElementById('orderCity').value
+  const post = document.getElementById('orderPost').value
+  const comment = document.getElementById('orderComment').value
+
+  const text = `
+🧶 НОВЕ ЗАМОВЛЕННЯ
+
+👤 ${lastName} ${firstName} ${middleName}
+📞 ${phone}
+
+📍 ${region}, ${city}
+📦 НП: ${post}
+
+📝 ${comment}
+  `
+
+  const telegramUrl = `https://t.me/Tanua_Mih?text=${encodeURIComponent(text)}`
+  window.open(telegramUrl, '_blank')
+}
   }
 
   initReveal()
