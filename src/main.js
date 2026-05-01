@@ -92,16 +92,14 @@ function submitOrder() {
   const lastName = document.getElementById('orderLastName').value.trim()
   const middleName = document.getElementById('orderMiddleName').value.trim()
   const phone = document.getElementById('orderPhone').value.trim()
-  const viber = document.getElementById('orderViber').value.trim()
-const telegram = document.getElementById('orderTelegram').value.trim()
-const instagram = document.getElementById('orderInstagram').value.trim()
+ const contact = document.getElementById('orderContact').value.trim()
   const region = document.getElementById('orderRegion').value.trim()
   const city = document.getElementById('orderCity').value.trim()
   const post = document.getElementById('orderPost').value.trim()
   const product = document.getElementById('orderProduct').value.trim()
   const comment = document.getElementById('orderComment').value.trim()
 
-  if (!firstName || !lastName || !phone || !region || !city || !post) {
+  if (!firstName || !lastName || !phone || !region || !city || !post)if (!firstName || !lastName || !phone || !contact || !region || !city || !post) {
     alert('Заповніть ім’я, прізвище, телефон, область, місто та відділення Нової Пошти')
     return
   }
@@ -112,6 +110,7 @@ const instagram = document.getElementById('orderInstagram').value.trim()
     lastName,
     middleName,
     phone,
+contact,
     viber,
 telegram,
 instagram,
@@ -280,18 +279,9 @@ function render() {
             <input id="orderPhone" placeholder="+380..." />
           </label>
           <label>
-  Viber
-  <input id="orderViber" placeholder="+380... або нік" />
-</label>
-
-<label>
-  Telegram
-  <input id="orderTelegram" placeholder="@username або номер" />
-</label>
-
-<label>
-  Instagram
-  <input id="orderInstagram" placeholder="@instagram" />
+ <label>
+  Звʼязок (Viber / Telegram / Instagram)
+  <input id="orderContact" placeholder="+380... або @username" />
 </label>
 
           <label>

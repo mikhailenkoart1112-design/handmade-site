@@ -230,9 +230,7 @@ function renderOrders() {
           <h3>${order.lastName || ''} ${order.firstName || ''} ${order.middleName || ''}</h3>
 
           <p><b>Телефон:</b> ${order.phone || '-'}</p>
-          <p><b>Viber:</b> ${order.viber || '-'}</p>
-<p><b>Telegram:</b> ${order.telegram || '-'}</p>
-<p><b>Instagram:</b> ${order.instagram || '-'}</p>
+          <p><b>Звʼязок:</b> ${order.contact || '-'}</p>
           <p><b>Область:</b> ${order.region || '-'}</p>
           <p><b>Місто / село:</b> ${order.city || '-'}</p>
           <p><b>Відділення НП:</b> ${order.post || '-'}</p>
