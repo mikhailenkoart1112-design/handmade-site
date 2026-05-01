@@ -42,7 +42,6 @@ const texts = {
 
 function getData() {
   const saved = localStorage.getItem('siteData')
-
   if (!saved) return defaultData
 
   try {
@@ -64,9 +63,7 @@ function openOrderModal(productName = '') {
   const modal = document.getElementById('orderModal')
   const productInput = document.getElementById('orderProduct')
 
-  if (productInput) {
-    productInput.value = productName
-  }
+  if (productInput) productInput.value = productName
 
   modal.classList.add('active')
   document.body.style.overflow = 'hidden'
@@ -92,15 +89,15 @@ function submitOrder() {
   const lastName = document.getElementById('orderLastName').value.trim()
   const middleName = document.getElementById('orderMiddleName').value.trim()
   const phone = document.getElementById('orderPhone').value.trim()
- const contact = document.getElementById('orderContact').value.trim()
+  const contact = document.getElementById('orderContact').value.trim()
   const region = document.getElementById('orderRegion').value.trim()
   const city = document.getElementById('orderCity').value.trim()
   const post = document.getElementById('orderPost').value.trim()
   const product = document.getElementById('orderProduct').value.trim()
   const comment = document.getElementById('orderComment').value.trim()
 
-  if (!firstName || !lastName || !phone || !region || !city || !post)if (!firstName || !lastName || !phone || !contact || !region || !city || !post) {
-    alert('Заповніть ім’я, прізвище, телефон, область, місто та відділення Нової Пошти')
+  if (!firstName || !lastName || !phone || !contact || !region || !city || !post) {
+    alert('Заповніть ім’я, прізвище, телефон, зв’язок, область, місто та відділення Нової Пошти')
     return
   }
 
@@ -110,10 +107,7 @@ function submitOrder() {
     lastName,
     middleName,
     phone,
-contact,
-    viber,
-telegram,
-instagram,
+    contact,
     region,
     city,
     post,
@@ -125,7 +119,6 @@ instagram,
 
   closeOrderModal()
   showSuccessMessage()
-
   document.getElementById('orderForm').reset()
 }
 
@@ -278,11 +271,11 @@ function render() {
             Телефон
             <input id="orderPhone" placeholder="+380..." />
           </label>
+
           <label>
- <label>
-  Звʼязок (Viber / Telegram / Instagram)
-  <input id="orderContact" placeholder="+380... або @username" />
-</label>
+            Звʼязок для зворотнього звʼязку: Viber / Telegram / Instagram
+            <input id="orderContact" placeholder="+380... або @username" />
+          </label>
 
           <label>
             Область
@@ -339,12 +332,13 @@ function render() {
   document.getElementById('closeOrderModal').onclick = closeOrderModal
 
   document.getElementById('orderModal').onclick = (event) => {
-    if (event.target.id === 'orderModal') {
-      closeOrderModal()
-    }
+    if (event.target.id === 'orderModal') closeOrderModal()
   }
 
-  document.getElementById('sendOrderBtn').onclick = submitOrder
+  const sendOrderBtn = document.getElementById('sendOrderBtn')
+  if (sendOrderBtn) {
+    sendOrderBtn.addEventListener('click', submitOrder)
+  }
 
   initReveal()
   initLoader()
