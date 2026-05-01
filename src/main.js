@@ -92,6 +92,9 @@ function submitOrder() {
   const lastName = document.getElementById('orderLastName').value.trim()
   const middleName = document.getElementById('orderMiddleName').value.trim()
   const phone = document.getElementById('orderPhone').value.trim()
+  const viber = document.getElementById('orderViber').value.trim()
+const telegram = document.getElementById('orderTelegram').value.trim()
+const instagram = document.getElementById('orderInstagram').value.trim()
   const region = document.getElementById('orderRegion').value.trim()
   const city = document.getElementById('orderCity').value.trim()
   const post = document.getElementById('orderPost').value.trim()
@@ -109,6 +112,9 @@ function submitOrder() {
     lastName,
     middleName,
     phone,
+    viber,
+telegram,
+instagram,
     region,
     city,
     post,
@@ -273,6 +279,20 @@ function render() {
             Телефон
             <input id="orderPhone" placeholder="+380..." />
           </label>
+          <label>
+  Viber
+  <input id="orderViber" placeholder="+380... або нік" />
+</label>
+
+<label>
+  Telegram
+  <input id="orderTelegram" placeholder="@username або номер" />
+</label>
+
+<label>
+  Instagram
+  <input id="orderInstagram" placeholder="@instagram" />
+</label>
 
           <label>
             Область
