@@ -9,7 +9,7 @@ const texts = {
     title: 'В’язані вироби ручної роботи',
     desc: 'Пледи, іграшки та інші handmade-вироби',
     view: 'Переглянути',
-    order: 'Замовити',
+    order: 'Замовити зараз',
     products: 'Наші вироби',
     gallery: 'Галерея',
     contacts: 'Контакти',
@@ -20,14 +20,13 @@ const texts = {
     langBtn: 'English',
     loadingTitle: 'Ручна робота',
     loadingText: 'Завантаження сайту...',
-    orderTitle: 'Оформити замовлення',
   },
   en: {
     handmade: 'Handmade',
     title: 'Handmade knitted products',
     desc: 'Blankets, toys and handmade items',
     view: 'View',
-    order: 'Order',
+    order: 'Order now',
     products: 'Our products',
     gallery: 'Gallery',
     contacts: 'Contacts',
@@ -38,7 +37,6 @@ const texts = {
     langBtn: 'Українська',
     loadingTitle: 'Handmade',
     loadingText: 'Loading website...',
-    orderTitle: 'Place an order',
   },
 }
 
@@ -52,6 +50,78 @@ function getData() {
   } catch {
     return defaultData
   }
+}
+
+function saveOrder(order) {
+  const saved = localStorage.getItem('orders')
+  const orders = saved ? JSON.parse(saved) : []
+
+  orders.unshift(order)
+  localStorage.setItem('orders', JSON.stringify(orders))
+}
+
+function openOrderModal(productName = '') {
+  const modal = document.getElementById('orderModal')
+  const productInput = document.getElementById('orderProduct')
+
+  if (productInput) {
+    productInput.value = productName
+  }
+
+  modal.classList.add('active')
+  document.body.style.overflow = 'hidden'
+}
+
+function closeOrderModal() {
+  const modal = document.getElementById('orderModal')
+  modal.classList.remove('active')
+  document.body.style.overflow = ''
+}
+
+function showSuccessMessage() {
+  const toast = document.getElementById('successToast')
+  toast.classList.add('active')
+
+  setTimeout(() => {
+    toast.classList.remove('active')
+  }, 2600)
+}
+
+function submitOrder() {
+  const firstName = document.getElementById('orderFirstName').value.trim()
+  const lastName = document.getElementById('orderLastName').value.trim()
+  const middleName = document.getElementById('orderMiddleName').value.trim()
+  const phone = document.getElementById('orderPhone').value.trim()
+  const region = document.getElementById('orderRegion').value.trim()
+  const city = document.getElementById('orderCity').value.trim()
+  const post = document.getElementById('orderPost').value.trim()
+  const product = document.getElementById('orderProduct').value.trim()
+  const comment = document.getElementById('orderComment').value.trim()
+
+  if (!firstName || !lastName || !phone || !region || !city || !post) {
+    alert('Заповніть ім’я, прізвище, телефон, область, місто та відділення Нової Пошти')
+    return
+  }
+
+  saveOrder({
+    id: Date.now(),
+    firstName,
+    lastName,
+    middleName,
+    phone,
+    region,
+    city,
+    post,
+    product,
+    comment,
+    status: 'Нове',
+    createdAt: new Date().toLocaleString('uk-UA'),
+  })
+
+  closeOrderModal()
+  showSuccessMessage()
+
+  document.getElementById('orderForm').reset()
 }
 
 function render() {
@@ -84,7 +154,7 @@ function render() {
 
           <div class="btns">
             <a href="#products" class="btn white">${t.view}</a>
-            <a href="#order" class="btn outline">${t.order}</a>
+            <button id="openOrderBtn" class="btn outline order-open-btn">${t.order}</button>
           </div>
         </div>
 
@@ -117,6 +187,12 @@ function render() {
                   />
                   <h3>${lang === 'ua' ? product.titleUa : product.titleEn}</h3>
                   <p>${lang === 'ua' ? product.descUa : product.descEn}</p>
+                  <button
+                    class="product-order-btn"
+                    data-product="${lang === 'ua' ? product.titleUa : product.titleEn}"
+                  >
+                    ${t.order}
+                  </button>
                 </div>
               `
             )
@@ -149,10 +225,35 @@ function render() {
         </div>
       </section>
 
-      <section id="order" class="order-section reveal reveal-bottom">
-        <h2 class="section-title">${t.orderTitle}</h2>
+      <section id="contacts" class="reveal reveal-bottom">
+        <h2 class="contacts-title">${t.contacts}</h2>
 
-        <div class="order-card">
+        <p class="contact-line">${t.phone}: +380682063627</p>
+        <p class="contact-line">${t.telegram}: @Tanua_Mih</p>
+        <p class="contact-line">${t.instagram}: @tanya_mukhajlenko</p>
+
+        <div class="contacts-btns">
+          <a href="https://t.me/Tanua_Mih" target="_blank" class="btn white">
+            Telegram
+          </a>
+          <a href="https://instagram.com/tanya_mukhajlenko" target="_blank" class="btn pink">
+            Instagram
+          </a>
+          <a href="tel:+380682063627" class="btn green">
+            ${t.call}
+          </a>
+        </div>
+      </section>
+    </main>
+
+    <div id="orderModal" class="order-modal">
+      <div class="order-modal-box">
+        <button id="closeOrderModal" class="order-close">×</button>
+
+        <h2>Оформити замовлення</h2>
+        <p class="order-subtitle">Заповніть дані для оформлення замовлення</p>
+
+        <form id="orderForm" class="order-form">
           <label>
             Ім’я
             <input id="orderFirstName" placeholder="Введіть ім’я" />
@@ -189,36 +290,25 @@ function render() {
           </label>
 
           <label>
-            Коментар до замовлення
-            <textarea id="orderComment" placeholder="Що саме хочете замовити?"></textarea>
+            Що замовляєте
+            <input id="orderProduct" placeholder="Напр. плед, іграшка, одяг" />
           </label>
 
-          <button id="sendOrderBtn" class="order-btn">
-            Надіслати замовлення
+          <label>
+            Коментар
+            <textarea id="orderComment" placeholder="Деталі замовлення"></textarea>
+          </label>
+
+          <button type="button" id="sendOrderBtn" class="order-submit">
+            Замовити
           </button>
-        </div>
-      </section>
+        </form>
+      </div>
+    </div>
 
-      <section id="contacts" class="reveal reveal-bottom">
-        <h2 class="contacts-title">${t.contacts}</h2>
-
-        <p class="contact-line">${t.phone}: +380682063627</p>
-        <p class="contact-line">${t.telegram}: @Tanua_Mih</p>
-        <p class="contact-line">${t.instagram}: @tanya_mukhajlenko</p>
-
-        <div class="contacts-btns">
-          <a href="https://t.me/Tanua_Mih" target="_blank" class="btn white">
-            Telegram
-          </a>
-          <a href="https://instagram.com/tanya_mukhajlenko" target="_blank" class="btn pink">
-            Instagram
-          </a>
-          <a href="tel:+380682063627" class="btn green">
-            ${t.call}
-          </a>
-        </div>
-      </section>
-    </main>
+    <div id="successToast" class="success-toast">
+      Ваше замовлення прийнято
+    </div>
   `
 
   document.getElementById('langBtn').onclick = () => {
@@ -226,35 +316,25 @@ function render() {
     render()
   }
 
-  const sendOrderBtn = document.getElementById('sendOrderBtn')
-
-  if (sendOrderBtn) {
-    sendOrderBtn.onclick = () => {
-  const firstName = document.getElementById('orderFirstName').value
-  const lastName = document.getElementById('orderLastName').value
-  const middleName = document.getElementById('orderMiddleName').value
-  const phone = document.getElementById('orderPhone').value
-  const region = document.getElementById('orderRegion').value
-  const city = document.getElementById('orderCity').value
-  const post = document.getElementById('orderPost').value
-  const comment = document.getElementById('orderComment').value
-
-  const text = `
-🧶 НОВЕ ЗАМОВЛЕННЯ
-
-👤 ${lastName} ${firstName} ${middleName}
-📞 ${phone}
-
-📍 ${region}, ${city}
-📦 НП: ${post}
-
-📝 ${comment}
-  `
-
-  const telegramUrl = `https://t.me/Tanua_Mih?text=${encodeURIComponent(text)}`
-  window.open(telegramUrl, '_blank')
-}
+  document.getElementById('openOrderBtn').onclick = () => {
+    openOrderModal()
   }
+
+  document.querySelectorAll('.product-order-btn').forEach((button) => {
+    button.onclick = () => {
+      openOrderModal(button.dataset.product)
+    }
+  })
+
+  document.getElementById('closeOrderModal').onclick = closeOrderModal
+
+  document.getElementById('orderModal').onclick = (event) => {
+    if (event.target.id === 'orderModal') {
+      closeOrderModal()
+    }
+  }
+
+  document.getElementById('sendOrderBtn').onclick = submitOrder
 
   initReveal()
   initLoader()

@@ -184,4 +184,95 @@ if (galleryInput && galleryPreview) {
   galleryInput.addEventListener('input', () => {
     galleryPreview.src = galleryInput.value.trim()
   })
+}window.openAdminTab = function (tabName, button) {
+  document.querySelectorAll('.admin-section').forEach((section) => {
+    section.classList.remove('active')
+  })
+
+  document.querySelectorAll('.tab-btn').forEach((btn) => {
+    btn.classList.remove('active')
+  })
+
+  document.getElementById(`tab-${tabName}`).classList.add('active')
+  button.classList.add('active')
 }
+
+function getOrders() {
+  const saved = localStorage.getItem('orders')
+  return saved ? JSON.parse(saved) : []
+}
+
+function saveOrders(orders) {
+  localStorage.setItem('orders', JSON.stringify(orders))
+}
+
+function renderOrders() {
+  const ordersList = document.getElementById('ordersList')
+  if (!ordersList) return
+
+  const orders = getOrders()
+
+  if (orders.length === 0) {
+    ordersList.innerHTML = '<p class="empty">Замовлень поки немає</p>'
+    return
+  }
+
+  ordersList.innerHTML = orders
+    .map((order) => {
+      const isDone = order.status === 'Виконано'
+
+      return `
+        <div class="order-card-admin">
+          <span class="order-status ${isDone ? 'done' : ''}">
+            ${order.status || 'Нове'}
+          </span>
+
+          <h3>${order.lastName || ''} ${order.firstName || ''} ${order.middleName || ''}</h3>
+
+          <p><b>Телефон:</b> ${order.phone || '-'}</p>
+          <p><b>Область:</b> ${order.region || '-'}</p>
+          <p><b>Місто / село:</b> ${order.city || '-'}</p>
+          <p><b>Відділення НП:</b> ${order.post || '-'}</p>
+          <p><b>Що замовляє:</b> ${order.product || '-'}</p>
+          <p><b>Коментар:</b> ${order.comment || '-'}</p>
+          <p><b>Дата:</b> ${order.createdAt || '-'}</p>
+
+          <button onclick="markOrderDone(${order.id})" class="green">Виконано</button>
+          <button onclick="deleteOrder(${order.id})" class="danger">Видалити</button>
+        </div>
+      `
+    })
+    .join('')
+}
+
+window.markOrderDone = function (id) {
+  const orders = getOrders()
+
+  const updated = orders.map((order) =>
+    order.id === id ? { ...order, status: 'Виконано' } : order
+  )
+
+  saveOrders(updated)
+  renderOrders()
+}
+
+window.deleteOrder = function (id) {
+  const ok = confirm('Видалити це замовлення?')
+  if (!ok) return
+
+  const orders = getOrders()
+  const updated = orders.filter((order) => order.id !== id)
+
+  saveOrders(updated)
+  renderOrders()
+}
+
+window.clearOrders = function () {
+  const ok = confirm('Очистити всі замовлення?')
+  if (!ok) return
+
+  localStorage.removeItem('orders')
+  renderOrders()
+}
+
+renderOrders()
