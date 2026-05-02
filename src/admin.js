@@ -1,5 +1,7 @@
 import { defaultData } from './data'
 
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzLKMmcZKiPpLVukfqrkN9sC_lOCXstpqJNr3q6reQZaT7SJyxMkjX3WUYdQLdumPXIRQ/exec'
+
 const USERS = [
   { login: 'artem', password: '564k2kev' },
   { login: 'tanya', password: '0682063627' },
@@ -203,34 +205,50 @@ window.openAdminTab = function (tabName, button) {
   }
 }
 
-function getOrders() {
-  const saved = localStorage.getItem('orders')
-  return saved ? JSON.parse(saved) : []
-}
+function getOrdersFromGoogleSheet(callback) {
+  const callbackName = 'ordersCallback_' + Date.now()
+  const script = document.createElement('script')
 
-function saveOrders(orders) {
-  localStorage.setItem('orders', JSON.stringify(orders))
+  window[callbackName] = function (orders) {
+    callback(orders)
+    delete window[callbackName]
+    script.remove()
+  }
+
+  script.onerror = function () {
+    const ordersList = document.getElementById('ordersList')
+    if (ordersList) {
+      ordersList.innerHTML = '<p class="empty">Не вдалося завантажити замовлення</p>'
+    }
+
+    delete window[callbackName]
+    script.remove()
+  }
+
+  script.src = `${SCRIPT_URL}?callback=${callbackName}`
+  document.body.appendChild(script)
 }
 
 function renderOrders() {
   const ordersList = document.getElementById('ordersList')
   if (!ordersList) return
 
-  const orders = getOrders()
+  ordersList.innerHTML = '<p class="empty">Завантаження...</p>'
 
-  if (orders.length === 0) {
-    ordersList.innerHTML = '<p class="empty">Замовлень поки немає</p>'
-    return
-  }
+  getOrdersFromGoogleSheet((orders) => {
+    if (!orders || orders.length === 0) {
+      ordersList.innerHTML = '<p class="empty">Замовлень поки немає</p>'
+      return
+    }
 
-  ordersList.innerHTML = orders
-    .map((order) => {
-      const isDone = order.status === 'Виконано'
+    ordersList.innerHTML = orders.reverse().map((order) => {
+      const status = order.status || 'Нове'
+      const isDone = status === 'Виконано'
 
       return `
         <div class="order-card-admin">
           <span class="order-status ${isDone ? 'done' : ''}">
-            ${order.status || 'Нове'}
+            ${status}
           </span>
 
           <h3>${order.lastName || ''} ${order.firstName || ''} ${order.middleName || ''}</h3>
@@ -242,44 +260,15 @@ function renderOrders() {
           <p><b>Відділення НП:</b> ${order.post || '-'}</p>
           <p><b>Що замовляє:</b> ${order.product || '-'}</p>
           <p><b>Коментар:</b> ${order.comment || '-'}</p>
-          <p><b>Дата:</b> ${order.createdAt || '-'}</p>
-
-          <button onclick="markOrderDone(${order.id})" class="green">Виконано</button>
-          <button onclick="deleteOrder(${order.id})" class="danger">Видалити</button>
+          <p><b>Дата:</b> ${order.date || '-'}</p>
         </div>
       `
-    })
-    .join('')
-}
-
-window.markOrderDone = function (id) {
-  const orders = getOrders()
-
-  const updated = orders.map((order) =>
-    order.id === id ? { ...order, status: 'Виконано' } : order
-  )
-
-  saveOrders(updated)
-  renderOrders()
-}
-
-window.deleteOrder = function (id) {
-  const ok = confirm('Видалити це замовлення?')
-  if (!ok) return
-
-  const orders = getOrders()
-  const updated = orders.filter((order) => order.id !== id)
-
-  saveOrders(updated)
-  renderOrders()
+    }).join('')
+  })
 }
 
 window.clearOrders = function () {
-  const ok = confirm('Очистити всі замовлення?')
-  if (!ok) return
-
-  localStorage.removeItem('orders')
-  renderOrders()
+  alert('Замовлення тепер зберігаються в Google Таблиці. Очистити їх можна тільки в самій таблиці.')
 }
 
 renderOrders()
