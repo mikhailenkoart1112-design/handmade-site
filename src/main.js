@@ -1,288 +1,383 @@
+import './style.css'
 import { defaultData } from './data'
 
-const USERS = [
-  { login: 'artem', password: '564k2kev' },
-  { login: 'tanya', password: '0682063627' },
-]
+let lang = 'ua'
 
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzLKMmcZKiPpLVukfqrkN9sC_lOCXstpqJNr3q6reQZaT7SJyxMkjX3WUYdQLdumPXIRQ/exec'
 
-function showAdmin() {
-  document.getElementById('loginScreen').style.display = 'none'
-  document.getElementById('adminPanel').classList.add('active')
-  renderOrders()
-}
-
-function showLogin() {
-  document.getElementById('loginScreen').style.display = 'flex'
-  document.getElementById('adminPanel').classList.remove('active')
-}
-
-function checkAuth() {
-  const isAuth = localStorage.getItem('adminAuth')
-
-  if (isAuth === 'true') {
-    showAdmin()
-  } else {
-    showLogin()
-  }
-}
-
-checkAuth()
-
-window.login = function () {
-  const login = document.getElementById('loginInput').value.trim()
-  const password = document.getElementById('passwordInput').value.trim()
-  const error = document.getElementById('errorMsg')
-
-  const user = USERS.find(
-    (u) => u.login === login && u.password === password
-  )
-
-  if (user) {
-    localStorage.setItem('adminAuth', 'true')
-    error.textContent = ''
-    showAdmin()
-  } else {
-    error.textContent = 'Невірний логін або пароль'
-  }
-}
-
-window.logout = function () {
-  localStorage.removeItem('adminAuth')
-  showLogin()
+const texts = {
+  ua: {
+    handmade: 'Ручна робота',
+    title: 'В’язані вироби ручної роботи',
+    desc: 'Пледи, іграшки та інші handmade-вироби',
+    view: 'Переглянути',
+    order: 'Замовити зараз',
+    products: 'Наші вироби',
+    gallery: 'Галерея',
+    contacts: 'Контакти',
+    phone: 'Телефон',
+    telegram: 'Telegram',
+    instagram: 'Instagram',
+    call: 'Подзвонити',
+    langBtn: 'English',
+    loadingTitle: 'Ручна робота',
+    loadingText: 'Завантаження сайту...',
+  },
+  en: {
+    handmade: 'Handmade',
+    title: 'Handmade knitted products',
+    desc: 'Blankets, toys and handmade items',
+    view: 'View',
+    order: 'Order now',
+    products: 'Our products',
+    gallery: 'Gallery',
+    contacts: 'Contacts',
+    phone: 'Phone',
+    telegram: 'Telegram',
+    instagram: 'Instagram',
+    call: 'Call',
+    langBtn: 'Українська',
+    loadingTitle: 'Handmade',
+    loadingText: 'Loading website...',
+  },
 }
 
 function getData() {
   const saved = localStorage.getItem('siteData')
 
-  if (!saved) {
-    return structuredClone(defaultData)
-  }
+  if (!saved) return defaultData
 
   try {
     return JSON.parse(saved)
   } catch {
-    return structuredClone(defaultData)
+    return defaultData
   }
 }
 
-function saveData(data) {
-  localStorage.setItem('siteData', JSON.stringify(data))
+function openOrderModal(productName = '') {
+  const modal = document.getElementById('orderModal')
+  const productInput = document.getElementById('orderProduct')
+
+  if (!modal) return
+
+  if (productInput) {
+    productInput.value = productName
+  }
+
+  modal.classList.add('active')
+  document.body.style.overflow = 'hidden'
 }
 
-window.addProduct = function () {
+function closeOrderModal() {
+  const modal = document.getElementById('orderModal')
+
+  if (!modal) return
+
+  modal.classList.remove('active')
+  document.body.style.overflow = ''
+}
+
+function showSuccessMessage() {
+  const toast = document.getElementById('successToast')
+
+  if (!toast) return
+
+  toast.classList.add('active')
+
+  setTimeout(() => {
+    toast.classList.remove('active')
+  }, 2600)
+}
+
+async function submitOrder() {
+  const firstName = document.getElementById('orderFirstName').value.trim()
+  const lastName = document.getElementById('orderLastName').value.trim()
+  const middleName = document.getElementById('orderMiddleName').value.trim()
+  const phone = document.getElementById('orderPhone').value.trim()
+  const contact = document.getElementById('orderContact').value.trim()
+  const region = document.getElementById('orderRegion').value.trim()
+  const city = document.getElementById('orderCity').value.trim()
+  const post = document.getElementById('orderPost').value.trim()
+  const product = document.getElementById('orderProduct').value.trim()
+  const comment = document.getElementById('orderComment').value.trim()
+
+  if (!firstName || !lastName || !phone || !contact || !region || !city || !post) {
+    alert('Заповніть ім’я, прізвище, телефон, зв’язок, область, місто та відділення Нової Пошти')
+    return
+  }
+
+  const order = {
+    firstName,
+    lastName,
+    middleName,
+    phone,
+    contact,
+    region,
+    city,
+    post,
+    product,
+    comment,
+  }
+
+  try {
+    await fetch(SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: {
+        'Content-Type': 'text/plain;charset=utf-8',
+      },
+      body: JSON.stringify(order),
+    })
+
+    closeOrderModal()
+    showSuccessMessage()
+    document.getElementById('orderForm').reset()
+  } catch (error) {
+    alert('Помилка відправки замовлення')
+    console.error(error)
+  }
+}
+
+function render() {
+  const app = document.querySelector('#app')
+  const seoFallback = document.getElementById('seoFallback')
+
+  if (!app) return
+  if (seoFallback) seoFallback.style.display = 'none'
+
+  const t = texts[lang]
   const data = getData()
 
-  const titleUa = document.getElementById('titleUa').value.trim()
-  const titleEn = document.getElementById('titleEn').value.trim()
-  const descUa = document.getElementById('descUa').value.trim()
-  const descEn = document.getElementById('descEn').value.trim()
-  const image = document.getElementById('image').value.trim()
-
-  if (!titleUa || !titleEn || !descUa || !descEn || !image) {
-    alert('Заповни всі поля товару')
-    return
-  }
-
-  if (!image.startsWith('/images/')) {
-    alert('Шлях до фото має бути типу: /images/назва.jpg')
-    return
-  }
-
-  data.products.push({
-    titleUa,
-    titleEn,
-    descUa,
-    descEn,
-    image,
-  })
-
-  saveData(data)
-  alert('Товар додано!')
-
-  document.getElementById('titleUa').value = ''
-  document.getElementById('titleEn').value = ''
-  document.getElementById('descUa').value = ''
-  document.getElementById('descEn').value = ''
-  document.getElementById('image').value = ''
-}
-
-window.addGallery = function () {
-  const data = getData()
-  const image = document.getElementById('galleryImg').value.trim()
-
-  if (!image) {
-    alert('Введи шлях до фото')
-    return
-  }
-
-  if (!image.startsWith('/images/')) {
-    alert('Шлях має бути типу: /images/g7.jpg')
-    return
-  }
-
-  if (data.gallery.includes(image)) {
-    alert('Таке фото вже є в галереї')
-    return
-  }
-
-  data.gallery.push(image)
-
-  saveData(data)
-  alert('Фото додано!')
-
-  document.getElementById('galleryImg').value = ''
-  document.getElementById('galleryPreview').src = ''
-}
-
-window.deleteImage = function () {
-  const data = getData()
-  const image = document.getElementById('deleteImage').value.trim()
-
-  if (!image) {
-    alert('Введи шлях фото для видалення')
-    return
-  }
-
-  const oldLength = data.gallery.length
-  data.gallery = data.gallery.filter((img) => img !== image)
-
-  saveData(data)
-
-  if (data.gallery.length === oldLength) {
-    alert('Такого фото не знайдено')
-  } else {
-    alert('Фото видалено!')
-  }
-
-  document.getElementById('deleteImage').value = ''
-}
-
-window.cleanGallery = function () {
-  const data = getData()
-
-  data.gallery = data.gallery.filter(
-    (image) => image && image.trim() !== '' && image.startsWith('/images/')
-  )
-
-  saveData(data)
-  alert('Галерею очищено від битих записів!')
-}
-
-window.resetData = function () {
-  const ok = confirm('Точно скинути всі зміни?')
-
-  if (!ok) return
-
-  localStorage.removeItem('siteData')
-  alert('Дані скинуто до стандартних!')
-}
-
-const galleryInput = document.getElementById('galleryImg')
-const galleryPreview = document.getElementById('galleryPreview')
-
-if (galleryInput && galleryPreview) {
-  galleryInput.addEventListener('input', () => {
-    galleryPreview.src = galleryInput.value.trim()
-  })
-}
-
-window.openAdminTab = function (tabName, button) {
-  document.querySelectorAll('.admin-section').forEach((section) => {
-    section.classList.remove('active')
-  })
-
-  document.querySelectorAll('.tab-btn').forEach((btn) => {
-    btn.classList.remove('active')
-  })
-
-  document.getElementById(`tab-${tabName}`).classList.add('active')
-  button.classList.add('active')
-
-  if (tabName === 'orders') {
-    renderOrders()
-  }
-}
-
-function getOrdersFromGoogleSheet(callback) {
-  const callbackName = 'ordersCallback_' + Date.now()
-
-  window[callbackName] = function (orders) {
-    callback(orders)
-    delete window[callbackName]
-    script.remove()
-  }
-
-  const script = document.createElement('script')
-  script.src = `https://script.google.com/macros/s/AKfycbx_oz000UGw_jYiPMZRsxWncn4aXdSpBU6mX1Wiy3ZxO1GzwyiktW91KzEfgydZgO438g/exec?callback=${callbackName}`
-  document.body.appendChild(script)
-}
-
-function saveOrders(orders) {
-  localStorage.setItem('orders', JSON.stringify(orders))
-}
-
-function renderOrders() {
-  const ordersList = document.getElementById('ordersList')
-  if (!ordersList) return
-
-  ordersList.innerHTML = '<p class="empty">Завантаження...</p>'
-
-  getOrdersFromGoogleSheet((orders) => {
-    if (!orders || orders.length === 0) {
-      ordersList.innerHTML = '<p class="empty">Замовлень поки немає</p>'
-      return
-    }
-
-    ordersList.innerHTML = orders.reverse().map((order) => {
-      return `
-        <div class="order-card-admin">
-          <span class="order-status">${order.status || 'Нове'}</span>
-
-          <h3>${order.lastName || ''} ${order.firstName || ''} ${order.middleName || ''}</h3>
-
-          <p><b>Телефон:</b> ${order.phone || '-'}</p>
-          <p><b>Звʼязок:</b> ${order.contact || '-'}</p>
-          <p><b>Область:</b> ${order.region || '-'}</p>
-          <p><b>Місто / село:</b> ${order.city || '-'}</p>
-          <p><b>Відділення НП:</b> ${order.post || '-'}</p>
-          <p><b>Що замовляє:</b> ${order.product || '-'}</p>
-          <p><b>Коментар:</b> ${order.comment || '-'}</p>
-          <p><b>Дата:</b> ${order.date || '-'}</p>
+  app.innerHTML = `
+    <div id="siteLoader" class="site-loader">
+      <div class="loader-box">
+        <div class="hook-wrap">
+          <div class="hook-stick"></div>
+          <div class="hook-head"></div>
+          <div class="thread thread-1"></div>
+          <div class="thread thread-2"></div>
+          <div class="thread thread-3"></div>
         </div>
-      `
-    }).join('')
+        <div class="loader-title">${t.loadingTitle}</div>
+        <div class="loader-text">${t.loadingText}</div>
+      </div>
+    </div>
+
+    <main class="site">
+      <button id="langBtn" class="lang-btn">${t.langBtn}</button>
+
+      <section class="hero">
+        <div class="hero-left reveal reveal-left active-on-load">
+          <p class="tag">${t.handmade}</p>
+          <h1>${t.title}</h1>
+          <p class="hero-desc">${t.desc}</p>
+
+          <div class="btns">
+            <a href="#products" class="btn white">${t.view}</a>
+            <button id="openOrderBtn" class="btn outline order-open-btn">${t.order}</button>
+          </div>
+        </div>
+
+        <div class="hero-right reveal reveal-right active-on-load">
+          <img src="/images/hero.jpg" class="hero-img" alt="PlushByTanya" />
+        </div>
+      </section>
+
+      <section id="products">
+        <h2 class="section-title reveal reveal-bottom">${t.products}</h2>
+
+        <div class="cards">
+          ${data.products.map((product, index) => `
+            <div class="card reveal ${
+              index % 3 === 0
+                ? 'reveal-left'
+                : index % 3 === 1
+                  ? 'reveal-bottom'
+                  : 'reveal-right'
+            }">
+              <img src="${product.image}" alt="${lang === 'ua' ? product.titleUa : product.titleEn}" />
+              <h3>${lang === 'ua' ? product.titleUa : product.titleEn}</h3>
+              <p>${lang === 'ua' ? product.descUa : product.descEn}</p>
+              <button class="product-order-btn" data-product="${lang === 'ua' ? product.titleUa : product.titleEn}">
+                ${t.order}
+              </button>
+            </div>
+          `).join('')}
+        </div>
+      </section>
+
+      <section class="gallery-section">
+        <h2 class="section-title reveal reveal-bottom">${t.gallery}</h2>
+
+        <div class="gallery">
+          ${data.gallery
+            .filter((image) => image && image.trim() !== '')
+            .map((image, index) => `
+              <img
+                src="${image}"
+                class="gallery-img reveal ${
+                  index % 3 === 0
+                    ? 'reveal-left'
+                    : index % 3 === 1
+                      ? 'reveal-right'
+                      : 'reveal-bottom'
+                }"
+                alt="Галерея PlushByTanya ${index + 1}"
+              />
+            `).join('')}
+        </div>
+      </section>
+
+      <section id="contacts" class="reveal reveal-bottom">
+        <h2 class="contacts-title">${t.contacts}</h2>
+
+        <p class="contact-line">${t.phone}: +380682063627</p>
+        <p class="contact-line">${t.telegram}: @Tanua_Mih</p>
+        <p class="contact-line">${t.instagram}: @tanya_mukhajlenko</p>
+
+        <div class="contacts-btns">
+          <a href="https://t.me/Tanua_Mih" target="_blank" class="btn white">Telegram</a>
+          <a href="https://instagram.com/tanya_mukhajlenko" target="_blank" class="btn pink">Instagram</a>
+          <a href="tel:+380682063627" class="btn green">${t.call}</a>
+        </div>
+      </section>
+    </main>
+
+    <div id="orderModal" class="order-modal">
+      <div class="order-modal-box">
+        <button id="closeOrderModal" class="order-close">×</button>
+
+        <h2>Оформити замовлення</h2>
+        <p class="order-subtitle">Заповніть дані для оформлення замовлення</p>
+
+        <form id="orderForm" class="order-form">
+          <label>
+            Ім’я
+            <input id="orderFirstName" placeholder="Введіть ім’я" />
+          </label>
+
+          <label>
+            Прізвище
+            <input id="orderLastName" placeholder="Введіть прізвище" />
+          </label>
+
+          <label>
+            По батькові
+            <input id="orderMiddleName" placeholder="Введіть по батькові" />
+          </label>
+
+          <label>
+            Телефон
+            <input id="orderPhone" placeholder="+380..." />
+          </label>
+
+          <label>
+            Звʼязок для зворотнього звʼязку: Viber / Telegram / Instagram
+            <input id="orderContact" placeholder="+380... або @username" />
+          </label>
+
+          <label>
+            Область
+            <input id="orderRegion" placeholder="Напр. Київська" />
+          </label>
+
+          <label>
+            Місто / село
+            <input id="orderCity" placeholder="Напр. Київ" />
+          </label>
+
+          <label>
+            Відділення Нової Пошти
+            <input id="orderPost" placeholder="Напр. №12" />
+          </label>
+
+          <label>
+            Що замовляєте
+            <input id="orderProduct" placeholder="Напр. плед, іграшка, одяг" />
+          </label>
+
+          <label>
+            Коментар
+            <textarea id="orderComment" placeholder="Деталі замовлення"></textarea>
+          </label>
+
+          <button type="button" id="sendOrderBtn" class="order-submit">
+            Замовити
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <div id="successToast" class="success-toast">
+      Ваше замовлення прийнято
+    </div>
+  `
+
+  document.getElementById('langBtn').onclick = () => {
+    lang = lang === 'ua' ? 'en' : 'ua'
+    render()
+  }
+
+  document.getElementById('openOrderBtn').onclick = () => openOrderModal()
+
+  document.querySelectorAll('.product-order-btn').forEach((button) => {
+    button.onclick = () => openOrderModal(button.dataset.product)
+  })
+
+  document.getElementById('closeOrderModal').onclick = closeOrderModal
+
+  document.getElementById('orderModal').onclick = (event) => {
+    if (event.target.id === 'orderModal') closeOrderModal()
+  }
+
+  document.getElementById('sendOrderBtn').onclick = submitOrder
+
+  initReveal()
+  initLoader()
+}
+
+function initReveal() {
+  const elements = document.querySelectorAll('.reveal')
+
+  elements.forEach((el) => {
+    if (el.classList.contains('active-on-load')) {
+      el.classList.add('active')
+    } else {
+      el.classList.remove('active')
+    }
+  })
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.intersectionRatio > 0.35) {
+          entry.target.classList.add('active')
+        } else if (
+          entry.intersectionRatio < 0.12 &&
+          !entry.target.classList.contains('active-on-load')
+        ) {
+          entry.target.classList.remove('active')
+        }
+      })
+    },
+    { threshold: [0.12, 0.35, 0.7] }
+  )
+
+  elements.forEach((el) => {
+    if (!el.classList.contains('active-on-load')) {
+      observer.observe(el)
+    }
   })
 }
 
-window.markOrderDone = function (id) {
-  const orders = getOrders()
+function initLoader() {
+  const loader = document.getElementById('siteLoader')
+  if (!loader) return
 
-  const updated = orders.map((order) =>
-    order.id === id ? { ...order, status: 'Виконано' } : order
-  )
-
-  saveOrders(updated)
-  renderOrders()
+  setTimeout(() => {
+    loader.classList.add('hide')
+    setTimeout(() => loader.remove(), 700)
+  }, 1700)
 }
 
-window.deleteOrder = function (id) {
-  const ok = confirm('Видалити це замовлення?')
-  if (!ok) return
-
-  const orders = getOrders()
-  const updated = orders.filter((order) => order.id !== id)
-
-  saveOrders(updated)
-  renderOrders()
-}
-
-window.clearOrders = function () {
-  const ok = confirm('Очистити всі замовлення?')
-  if (!ok) return
-
-  localStorage.removeItem('orders')
-  renderOrders()
-}
-
-renderOrders()
+render()
