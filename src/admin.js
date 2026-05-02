@@ -1,6 +1,6 @@
 import { defaultData } from './data'
 
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzLKMmcZKiPpLVukfqrkN9sC_lOCXstpqJNr3q6reQZaT7SJyxMkjX3WUYdQLdumPXIRQ/exec'
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwcktakSICuah-89W7GMNNfiICNN2srE9c9rs2vv-32CIzvRVCVEZL-Ujol6XT6brufwQ/exec'
 
 const USERS = [
   { login: 'artem', password: '564k2kev' },

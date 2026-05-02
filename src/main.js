@@ -3,7 +3,7 @@ import { defaultData } from './data'
 
 let lang = 'ua'
 
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzLKMmcZKiPpLVukfqrkN9sC_lOCXstpqJNr3q6reQZaT7SJyxMkjX3WUYdQLdumPXIRQ/exec'
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwcktakSICuah-89W7GMNNfiICNN2srE9c9rs2vv-32CIzvRVCVEZL-Ujol6XT6brufwQ/exec'
 
 const texts = {
   ua: {
