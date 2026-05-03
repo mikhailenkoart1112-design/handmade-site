@@ -229,6 +229,22 @@ function getOrdersFromGoogleSheet(callback) {
   document.body.appendChild(script)
 }
 
+async function updateOrderStatus(row, status) {
+  await fetch(SCRIPT_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    body: JSON.stringify({
+      action: 'status',
+      row,
+      status,
+    }),
+  })
+
+  setTimeout(renderOrders, 700)
+}
+
+window.updateOrderStatus = updateOrderStatus
+
 function renderOrders() {
   const ordersList = document.getElementById('ordersList')
   if (!ordersList) return
@@ -246,7 +262,7 @@ function renderOrders() {
       const isDone = status === 'Виконано'
 
       return `
-        <div class="order-card-admin">
+        <div class="order-card-admin ${isDone ? 'order-card-done' : ''}">
           <span class="order-status ${isDone ? 'done' : ''}">
             ${status}
           </span>
@@ -261,6 +277,16 @@ function renderOrders() {
           <p><b>Що замовляє:</b> ${order.product || '-'}</p>
           <p><b>Коментар:</b> ${order.comment || '-'}</p>
           <p><b>Дата:</b> ${order.date || '-'}</p>
+
+          <div class="order-actions">
+            <button class="green" onclick="updateOrderStatus(${order.id}, 'Виконано')">
+              Зроблено
+            </button>
+
+            <button class="danger" onclick="updateOrderStatus(${order.id}, 'Відмовлено')">
+              Відмовлено
+            </button>
+          </div>
         </div>
       `
     }).join('')
