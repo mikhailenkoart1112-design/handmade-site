@@ -122,9 +122,7 @@ async function submitOrder() {
   try {
     await fetch(SCRIPT_URL, {
   method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-  },
+  mode: 'no-cors',
   body: JSON.stringify(order),
 })
 
