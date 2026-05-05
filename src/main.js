@@ -3,8 +3,7 @@ import { defaultData } from './data'
 
 let lang = 'ua'
 
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwcktakSICuah-89W7GMNNfiICNN2srE9c9rs2vv-32CIzvRVCVEZL-Ujol6XT6brufwQ/exec'
-
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxd_GOO4dzFA87Ks7tWGXjEIWsFyIyHCRKUilor0yfGPmZTHdWuOf4x5TI0jPse7jCnSg/exec'
 const texts = {
   ua: {
     handmade: 'Ручна робота',
@@ -122,7 +121,6 @@ async function submitOrder() {
   try {
     await fetch(SCRIPT_URL, {
   method: 'POST',
-  mode: 'no-cors',
   body: JSON.stringify(order),
 })
 

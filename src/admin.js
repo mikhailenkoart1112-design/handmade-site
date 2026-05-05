@@ -1,7 +1,6 @@
 import { defaultData } from './data'
 
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwcktakSICuah-89W7GMNNfiICNN2srE9c9rs2vv-32CIzvRVCVEZL-Ujol6XT6brufwQ/exec'
-
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxd_GOO4dzFA87Ks7tWGXjEIWsFyIyHCRKUilor0yfGPmZTHdWuOf4x5TI0jPse7jCnSg/exec'
 const USERS = [
   { login: 'artem', password: '564k2kev' },
   { login: 'tanya', password: '0682063627' },
@@ -124,9 +123,8 @@ window.addGallery = async function () {
     const base64 = await readFileAsBase64(file)
 
     await fetch(SCRIPT_URL, {
-      method: 'POST',
-      mode: 'no-cors',
-      body: JSON.stringify({
+  method: 'POST',
+  body: JSON.stringify({
         action: 'upload',
         file: base64,
         type: file.type,
