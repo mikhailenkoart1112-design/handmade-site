@@ -99,8 +99,7 @@ function readFileAsBase64(file) {
     const reader = new FileReader()
 
     reader.onload = () => {
-      const base64 = reader.result.split(',')[1]
-      resolve(base64)
+      resolve(reader.result.split(',')[1])
     }
 
     reader.onerror = reject
@@ -108,68 +107,41 @@ function readFileAsBase64(file) {
   })
 }
 
-async function uploadImageToGoogleDrive(file) {
-  const base64 = await readFileAsBase64(file)
-
-  const res = await fetch(SCRIPT_URL, {
-    method: 'POST',
-    body: JSON.stringify({
-      action: 'upload',
-      file: base64,
-      type: file.type,
-      name: file.name,
-    }),
-  })
-
-  const data = await res.json()
-
-  if (!data.ok || !data.url) {
-    throw new Error('Google Drive не повернув URL')
-  }
-
-  return data.url
-}
-
 window.addGallery = async function () {
   const fileInput = document.getElementById('galleryFile')
-  const oldUrlInput = document.getElementById('galleryImg')
   const preview = document.getElementById('galleryPreview')
 
-  let image = ''
-
-  if (fileInput && fileInput.files && fileInput.files[0]) {
-    try {
-      alert('Завантаження фото...')
-      image = await uploadImageToGoogleDrive(fileInput.files[0])
-    } catch (error) {
-      console.error(error)
-      alert('Помилка завантаження фото')
-      return
-    }
-  } else if (oldUrlInput) {
-    image = oldUrlInput.value.trim()
-  }
-
-  if (!image) {
-    alert('Вибери фото або введи посилання')
+  if (!fileInput || !fileInput.files || !fileInput.files[0]) {
+    alert('Вибери фото')
     return
   }
 
-  const data = getData()
+  const file = fileInput.files[0]
 
-  if (data.gallery.includes(image)) {
-    alert('Таке фото вже є в галереї')
-    return
+  try {
+    alert('Завантаження фото...')
+
+    const base64 = await readFileAsBase64(file)
+
+    await fetch(SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      body: JSON.stringify({
+        action: 'upload',
+        file: base64,
+        type: file.type,
+        name: file.name,
+      }),
+    })
+
+    alert('Фото додано! Перевір Google Таблицю, лист Gallery')
+
+    fileInput.value = ''
+    if (preview) preview.src = ''
+  } catch (error) {
+    console.error(error)
+    alert('Помилка завантаження фото')
   }
-
-  data.gallery.push(image)
-  saveData(data)
-
-  alert('Фото додано!')
-
-  if (fileInput) fileInput.value = ''
-  if (oldUrlInput) oldUrlInput.value = ''
-  if (preview) preview.src = image
 }
 
 window.deleteImage = function () {
@@ -194,11 +166,7 @@ window.deleteImage = function () {
 
 window.cleanGallery = function () {
   const data = getData()
-
-  data.gallery = data.gallery.filter(
-    (image) => image && image.trim() !== ''
-  )
-
+  data.gallery = data.gallery.filter((image) => image && image.trim() !== '')
   saveData(data)
   alert('Галерею очищено від пустих записів!')
 }
