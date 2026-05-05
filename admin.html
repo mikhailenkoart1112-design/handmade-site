@@ -132,6 +132,7 @@
       margin: 10px 0;
       border-radius: 12px;
       background: #eee;
+      object-fit: contain;
     }
 
     .hint {
@@ -183,6 +184,11 @@
       background: #fafafa;
     }
 
+    .order-card-done {
+      border-color: #16a34a;
+      background: #f0fdf4;
+    }
+
     .order-status {
       display: inline-block;
       padding: 5px 10px;
@@ -197,29 +203,21 @@
       background: #16a34a;
     }
 
+    .order-actions {
+      margin-top: 18px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .order-actions button {
+      margin-right: 0;
+    }
+
     .empty {
       color: #777;
       font-size: 18px;
     }
-    .order-card-done {
-  border-color: #16a34a;
-  background: #f0fdf4;
-}
-
-.order-status.done {
-  background: #16a34a;
-}
-
-.order-actions {
-  margin-top: 18px;
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.order-actions button {
-  margin-right: 0;
-}
 
     @media (max-width: 700px) {
       .top {
@@ -289,9 +287,10 @@
         <input id="titleEn" placeholder="Назва EN">
         <input id="descUa" placeholder="Опис UA">
         <input id="descEn" placeholder="Опис EN">
-        <input id="image" placeholder="/images/xxx.jpg">
 
-        <p class="hint">Фото має лежати в папці public/images</p>
+        <input id="image" placeholder="Посилання на фото або /images/xxx.jpg">
+
+        <p class="hint">Можна вставити посилання з Google Drive або старий шлях /images/xxx.jpg</p>
 
         <button onclick="addProduct()">Додати товар</button>
       </section>
@@ -301,8 +300,10 @@
       <section class="box">
         <h2>Додати фото в галерею</h2>
 
-        <input id="galleryImg" placeholder="/images/g7.jpg">
+        <input id="galleryFile" type="file" accept="image/*">
         <img id="galleryPreview" class="preview" alt="Preview">
+
+        <p class="hint">Фото можна вибрати прямо з телефону. Воно завантажиться в Google Drive.</p>
 
         <button onclick="addGallery()" class="green">Додати фото</button>
       </section>
@@ -310,7 +311,7 @@
       <section class="box">
         <h3>Видалити фото з галереї</h3>
 
-        <input id="deleteImage" placeholder="/images/g7.jpg">
+        <input id="deleteImage" placeholder="Встав посилання фото для видалення">
 
         <button onclick="deleteImage()" class="danger">Видалити</button>
       </section>

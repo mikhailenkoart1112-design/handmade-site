@@ -20,12 +20,8 @@ function showLogin() {
 
 function checkAuth() {
   const isAuth = localStorage.getItem('adminAuth')
-
-  if (isAuth === 'true') {
-    showAdmin()
-  } else {
-    showLogin()
-  }
+  if (isAuth === 'true') showAdmin()
+  else showLogin()
 }
 
 checkAuth()
@@ -35,9 +31,7 @@ window.login = function () {
   const password = document.getElementById('passwordInput').value.trim()
   const error = document.getElementById('errorMsg')
 
-  const user = USERS.find(
-    (u) => u.login === login && u.password === password
-  )
+  const user = USERS.find((u) => u.login === login && u.password === password)
 
   if (user) {
     localStorage.setItem('adminAuth', 'true')
@@ -55,10 +49,7 @@ window.logout = function () {
 
 function getData() {
   const saved = localStorage.getItem('siteData')
-
-  if (!saved) {
-    return structuredClone(defaultData)
-  }
+  if (!saved) return structuredClone(defaultData)
 
   try {
     return JSON.parse(saved)
@@ -85,11 +76,6 @@ window.addProduct = function () {
     return
   }
 
-  if (!image.startsWith('/images/')) {
-    alert('Шлях до фото має бути типу: /images/назва.jpg')
-    return
-  }
-
   data.products.push({
     titleUa,
     titleEn,
@@ -108,19 +94,68 @@ window.addProduct = function () {
   document.getElementById('image').value = ''
 }
 
-window.addGallery = function () {
-  const data = getData()
-  const image = document.getElementById('galleryImg').value.trim()
+function readFileAsBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader()
+
+    reader.onload = () => {
+      const base64 = reader.result.split(',')[1]
+      resolve(base64)
+    }
+
+    reader.onerror = reject
+    reader.readAsDataURL(file)
+  })
+}
+
+async function uploadImageToGoogleDrive(file) {
+  const base64 = await readFileAsBase64(file)
+
+  const res = await fetch(SCRIPT_URL, {
+    method: 'POST',
+    body: JSON.stringify({
+      action: 'upload',
+      file: base64,
+      type: file.type,
+      name: file.name,
+    }),
+  })
+
+  const data = await res.json()
+
+  if (!data.ok || !data.url) {
+    throw new Error('Google Drive не повернув URL')
+  }
+
+  return data.url
+}
+
+window.addGallery = async function () {
+  const fileInput = document.getElementById('galleryFile')
+  const oldUrlInput = document.getElementById('galleryImg')
+  const preview = document.getElementById('galleryPreview')
+
+  let image = ''
+
+  if (fileInput && fileInput.files && fileInput.files[0]) {
+    try {
+      alert('Завантаження фото...')
+      image = await uploadImageToGoogleDrive(fileInput.files[0])
+    } catch (error) {
+      console.error(error)
+      alert('Помилка завантаження фото')
+      return
+    }
+  } else if (oldUrlInput) {
+    image = oldUrlInput.value.trim()
+  }
 
   if (!image) {
-    alert('Введи шлях до фото')
+    alert('Вибери фото або введи посилання')
     return
   }
 
-  if (!image.startsWith('/images/')) {
-    alert('Шлях має бути типу: /images/g7.jpg')
-    return
-  }
+  const data = getData()
 
   if (data.gallery.includes(image)) {
     alert('Таке фото вже є в галереї')
@@ -128,12 +163,13 @@ window.addGallery = function () {
   }
 
   data.gallery.push(image)
-
   saveData(data)
+
   alert('Фото додано!')
 
-  document.getElementById('galleryImg').value = ''
-  document.getElementById('galleryPreview').src = ''
+  if (fileInput) fileInput.value = ''
+  if (oldUrlInput) oldUrlInput.value = ''
+  if (preview) preview.src = image
 }
 
 window.deleteImage = function () {
@@ -141,7 +177,7 @@ window.deleteImage = function () {
   const image = document.getElementById('deleteImage').value.trim()
 
   if (!image) {
-    alert('Введи шлях фото для видалення')
+    alert('Введи шлях або посилання фото для видалення')
     return
   }
 
@@ -150,11 +186,8 @@ window.deleteImage = function () {
 
   saveData(data)
 
-  if (data.gallery.length === oldLength) {
-    alert('Такого фото не знайдено')
-  } else {
-    alert('Фото видалено!')
-  }
+  if (data.gallery.length === oldLength) alert('Такого фото не знайдено')
+  else alert('Фото видалено!')
 
   document.getElementById('deleteImage').value = ''
 }
@@ -163,29 +196,19 @@ window.cleanGallery = function () {
   const data = getData()
 
   data.gallery = data.gallery.filter(
-    (image) => image && image.trim() !== '' && image.startsWith('/images/')
+    (image) => image && image.trim() !== ''
   )
 
   saveData(data)
-  alert('Галерею очищено від битих записів!')
+  alert('Галерею очищено від пустих записів!')
 }
 
 window.resetData = function () {
   const ok = confirm('Точно скинути всі зміни?')
-
   if (!ok) return
 
   localStorage.removeItem('siteData')
   alert('Дані скинуто до стандартних!')
-}
-
-const galleryInput = document.getElementById('galleryImg')
-const galleryPreview = document.getElementById('galleryPreview')
-
-if (galleryInput && galleryPreview) {
-  galleryInput.addEventListener('input', () => {
-    galleryPreview.src = galleryInput.value.trim()
-  })
 }
 
 window.openAdminTab = function (tabName, button) {
@@ -200,9 +223,7 @@ window.openAdminTab = function (tabName, button) {
   document.getElementById(`tab-${tabName}`).classList.add('active')
   button.classList.add('active')
 
-  if (tabName === 'orders') {
-    renderOrders()
-  }
+  if (tabName === 'orders') renderOrders()
 }
 
 function getOrdersFromGoogleSheet(callback) {
