@@ -1,6 +1,7 @@
 import { defaultData } from './data'
 
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxd_GOO4dzFA87Ks7tWGXjEIWsFyIyHCRKUilor0yfGPmZTHdWuOf4x5TI0jPse7jCnSg/exec'
+
 const USERS = [
   { login: 'artem', password: '564k2kev' },
   { login: 'tanya', password: '0682063627' },
@@ -75,15 +76,9 @@ window.addProduct = function () {
     return
   }
 
-  data.products.push({
-    titleUa,
-    titleEn,
-    descUa,
-    descEn,
-    image,
-  })
-
+  data.products.push({ titleUa, titleEn, descUa, descEn, image })
   saveData(data)
+
   alert('Товар додано!')
 
   document.getElementById('titleUa').value = ''
@@ -97,10 +92,7 @@ function readFileAsBase64(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader()
 
-    reader.onload = () => {
-      resolve(reader.result.split(',')[1])
-    }
-
+    reader.onload = () => resolve(reader.result.split(',')[1])
     reader.onerror = reject
     reader.readAsDataURL(file)
   })
@@ -123,50 +115,43 @@ window.addGallery = async function () {
     const base64 = await readFileAsBase64(file)
 
     await fetch(SCRIPT_URL, {
-  method: 'POST',
-  body: JSON.stringify({
+      method: 'POST',
+      mode: 'no-cors',
+      body: JSON.stringify({
         action: 'upload',
         file: base64,
-        type: file.type,
         name: file.name,
+        type: file.type,
       }),
     })
 
-    alert('Фото додано! Перевір Google Таблицю, лист Gallery')
+    alert('Фото додано! Перевір Google Drive і лист Gallery')
 
     fileInput.value = ''
     if (preview) preview.src = ''
-  } catch (error) {
-    console.error(error)
+  } catch (err) {
+    console.error(err)
     alert('Помилка завантаження фото')
   }
 }
 
+const galleryFile = document.getElementById('galleryFile')
+const galleryPreview = document.getElementById('galleryPreview')
+
+if (galleryFile && galleryPreview) {
+  galleryFile.addEventListener('change', function () {
+    const file = this.files[0]
+    if (!file) return
+    galleryPreview.src = URL.createObjectURL(file)
+  })
+}
+
 window.deleteImage = function () {
-  const data = getData()
-  const image = document.getElementById('deleteImage').value.trim()
-
-  if (!image) {
-    alert('Введи шлях або посилання фото для видалення')
-    return
-  }
-
-  const oldLength = data.gallery.length
-  data.gallery = data.gallery.filter((img) => img !== image)
-
-  saveData(data)
-
-  if (data.gallery.length === oldLength) alert('Такого фото не знайдено')
-  else alert('Фото видалено!')
-
-  document.getElementById('deleteImage').value = ''
+  alert('Видалення фото з Google Drive поки не підключене')
 }
 
 window.cleanGallery = function () {
-  const data = getData()
-  data.gallery = data.gallery.filter((image) => image && image.trim() !== '')
-  saveData(data)
-  alert('Галерею очищено від пустих записів!')
+  alert('Очищення галереї поки не підключене')
 }
 
 window.resetData = function () {
@@ -281,7 +266,7 @@ function renderOrders() {
 }
 
 window.clearOrders = function () {
-  alert('Замовлення тепер зберігаються в Google Таблиці. Очистити їх можна тільки в самій таблиці.')
+  alert('Замовлення зберігаються в Google Таблиці. Очистити їх можна тільки в таблиці.')
 }
 
 renderOrders()
