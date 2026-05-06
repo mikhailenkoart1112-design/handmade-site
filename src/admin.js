@@ -106,57 +106,7 @@ function readFileAsBase64(file) {
   })
 }
 
-window.addGallery = async function () {
-  const fileInput = document.getElementById('galleryFile')
-  const preview = document.getElementById('galleryPreview')
-
-  if (!fileInput || !fileInput.files || !fileInput.files[0]) {
-    alert('Вибери фото')
-    return
-  }
-
-  const file = fileInput.files[0]
-
-  try {
-    alert('Завантаження фото...')
-
-    const base64 = await readFileAsBase64(file)
-
-    const form = document.createElement('form')
-    form.method = 'POST'
-    form.action = SCRIPT_URL
-    form.target = 'uploadFrame'
-    form.style.display = 'none'
-
-    const fields = {
-      action: 'upload',
-      file: base64,
-      type: file.type,
-      name: file.name,
-    }
-
-    Object.keys(fields).forEach((key) => {
-      const input = document.createElement('input')
-      input.type = 'hidden'
-      input.name = key
-      input.value = fields[key]
-      form.appendChild(input)
-    })
-
-    document.body.appendChild(form)
-    form.submit()
-
-    setTimeout(() => {
-      form.remove()
-      alert('Фото відправлено. Перевір Drive і Gallery')
-      fileInput.value = ''
-      if (preview) preview.src = ''
-    }, 5000)
-  } catch (error) {
-    console.error(error)
-    alert('Помилка завантаження фото')
-  }
-}
+window.addGallery
 
 const galleryFile = document.getElementById('galleryFile')
 const galleryPreview = document.getElementById('galleryPreview')
