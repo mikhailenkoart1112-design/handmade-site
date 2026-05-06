@@ -76,9 +76,15 @@ window.addProduct = function () {
     return
   }
 
-  data.products.push({ titleUa, titleEn, descUa, descEn, image })
-  saveData(data)
+  data.products.push({
+    titleUa,
+    titleEn,
+    descUa,
+    descEn,
+    image,
+  })
 
+  saveData(data)
   alert('Товар додано!')
 
   document.getElementById('titleUa').value = ''
@@ -92,7 +98,10 @@ function readFileAsBase64(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader()
 
-    reader.onload = () => resolve(reader.result.split(',')[1])
+    reader.onload = () => {
+      resolve(reader.result.split(',')[1])
+    }
+
     reader.onerror = reject
     reader.readAsDataURL(file)
   })
@@ -114,23 +123,38 @@ window.addGallery = async function () {
 
     const base64 = await readFileAsBase64(file)
 
-    await fetch(SCRIPT_URL, {
-      method: 'POST',
-      mode: 'no-cors',
-      body: JSON.stringify({
-        action: 'upload',
-        file: base64,
-        name: file.name,
-        type: file.type,
-      }),
+    const form = document.createElement('form')
+    form.method = 'POST'
+    form.action = SCRIPT_URL
+    form.target = 'uploadFrame'
+    form.style.display = 'none'
+
+    const fields = {
+      action: 'upload',
+      file: base64,
+      type: file.type,
+      name: file.name,
+    }
+
+    Object.keys(fields).forEach((key) => {
+      const input = document.createElement('input')
+      input.type = 'hidden'
+      input.name = key
+      input.value = fields[key]
+      form.appendChild(input)
     })
 
-    alert('Фото додано! Перевір Google Drive і лист Gallery')
+    document.body.appendChild(form)
+    form.submit()
+    form.remove()
 
-    fileInput.value = ''
-    if (preview) preview.src = ''
-  } catch (err) {
-    console.error(err)
+    setTimeout(() => {
+      alert('Фото додано! Перевір Google Drive і лист Gallery')
+      fileInput.value = ''
+      if (preview) preview.src = ''
+    }, 2500)
+  } catch (error) {
+    console.error(error)
     alert('Помилка завантаження фото')
   }
 }
@@ -142,6 +166,7 @@ if (galleryFile && galleryPreview) {
   galleryFile.addEventListener('change', function () {
     const file = this.files[0]
     if (!file) return
+
     galleryPreview.src = URL.createObjectURL(file)
   })
 }
@@ -174,7 +199,9 @@ window.openAdminTab = function (tabName, button) {
   document.getElementById(`tab-${tabName}`).classList.add('active')
   button.classList.add('active')
 
-  if (tabName === 'orders') renderOrders()
+  if (tabName === 'orders') {
+    renderOrders()
+  }
 }
 
 function getOrdersFromGoogleSheet(callback) {
