@@ -106,18 +106,41 @@ function readFileAsBase64(file) {
   })
 }
 
-window.addGallery
+window.addGallery = async function () {
+  const fileInput = document.getElementById('galleryFile')
+  const preview = document.getElementById('galleryPreview')
 
-const galleryFile = document.getElementById('galleryFile')
-const galleryPreview = document.getElementById('galleryPreview')
+  if (!fileInput || !fileInput.files || !fileInput.files[0]) {
+    alert('Вибери фото')
+    return
+  }
 
-if (galleryFile && galleryPreview) {
-  galleryFile.addEventListener('change', function () {
-    const file = this.files[0]
-    if (!file) return
+  const file = fileInput.files[0]
 
-    galleryPreview.src = URL.createObjectURL(file)
-  })
+  try {
+    alert('Завантаження фото...')
+
+    const base64 = await readFileAsBase64(file)
+
+    await fetch(SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      body: JSON.stringify({
+        action: 'upload',
+        file: base64,
+        type: file.type,
+        name: file.name,
+      }),
+    })
+
+    alert('Фото відправлено. Перевір Drive і Gallery')
+
+    fileInput.value = ''
+    if (preview) preview.src = ''
+  } catch (error) {
+    console.error(error)
+    alert('Помилка завантаження фото')
+  }
 }
 
 window.deleteImage = function () {
