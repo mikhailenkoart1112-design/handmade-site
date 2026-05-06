@@ -145,13 +145,13 @@ window.addGallery = async function () {
 
     document.body.appendChild(form)
     form.submit()
-    form.remove()
 
     setTimeout(() => {
-      alert('Фото додано! Перевір Google Drive і лист Gallery')
+      form.remove()
+      alert('Фото відправлено. Перевір Drive і Gallery')
       fileInput.value = ''
       if (preview) preview.src = ''
-    }, 2500)
+    }, 5000)
   } catch (error) {
     console.error(error)
     alert('Помилка завантаження фото')
